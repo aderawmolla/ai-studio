@@ -38,7 +38,7 @@
       "id": "char_biruk_young",
       "type": "character",
       "description": "Ethiopian young man of about twenty-two, lean, short curly dark hair, simple olive utility shirt and dark trousers, earnest eyes, gentle smile",
-      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/char_biruk_young.png",
+      "image_path": "outputs/references/char_biruk_young.png",
       "seed": 3101,
       "generation_status": "generated"
     },
@@ -46,7 +46,7 @@
       "id": "char_mother",
       "type": "character",
       "description": "Ethiopian mother in her late forties to fifties, traditional handwoven white cotton netela shawl with subtle terracotta border over a dark dress, warm eyes, serene proud smile",
-      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/char_mother.png",
+      "image_path": "outputs/references/char_mother.png",
       "seed": 3102,
       "generation_status": "generated"
     },
@@ -54,7 +54,7 @@
       "id": "loc_family_courtyard",
       "type": "location",
       "description": "Modest Ethiopian highland home courtyard with a low stone step, woven basket and clay coffee pot nearby, warm afternoon light, eucalyptus and green hills beyond",
-      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/loc_family_courtyard.png",
+      "image_path": "outputs/references/loc_family_courtyard.png",
       "seed": 3201,
       "generation_status": "generated"
     },
@@ -62,7 +62,7 @@
       "id": "loc_city_workshop",
       "type": "location",
       "description": "Small cramped city workspace and shared room with a wooden workbench, stacked notebooks and sketches, one window overlooking city rooftops",
-      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/loc_city_workshop.png",
+      "image_path": "outputs/references/loc_city_workshop.png",
       "seed": 3202,
       "generation_status": "generated"
     }
@@ -117,13 +117,13 @@
       "subtitle_text_en": "Before Biruk left for the city, he sat with his mother and promised he would build a good life—and never stop trying.",
       "generation_status": {
         "keyframe": "generated",
-        "video": "generated",
+        "video": "reused",
         "narration": "reused"
       },
       "seed": 4001,
-      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_01.png",
-      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_01.mp4",
-      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_01.wav"
+      "keyframe_path": "outputs/keyframes/sh_01.png",
+      "clip_path": "outputs/clips/sh_01.mp4",
+      "narration_path": "outputs/narration/sh_01.wav"
     },
     {
       "shot_id": "sh_02",
@@ -146,13 +146,13 @@
       "subtitle_text_en": "In the city, he tried many things—odd jobs, repair work, long hours learning whatever could open a door.",
       "generation_status": {
         "keyframe": "generated",
-        "video": "generated",
+        "video": "reused",
         "narration": "generated"
       },
       "seed": 4002,
-      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_02.png",
-      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_02.mp4",
-      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_02.wav"
+      "keyframe_path": "outputs/keyframes/sh_02.png",
+      "clip_path": "outputs/clips/sh_02.mp4",
+      "narration_path": "outputs/narration/sh_02.wav"
     },
     {
       "shot_id": "sh_03",
@@ -173,13 +173,13 @@
       "subtitle_text_en": "When one plan stalled, he picked up another, carrying notebooks, samples, and quiet hope from place to place.",
       "generation_status": {
         "keyframe": "generated",
-        "video": "generated",
+        "video": "reused",
         "narration": "generated"
       },
       "seed": 4003,
-      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_03.png",
-      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_03.mp4",
-      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_03.wav"
+      "keyframe_path": "outputs/keyframes/sh_03.png",
+      "clip_path": "outputs/clips/sh_03.mp4",
+      "narration_path": "outputs/narration/sh_03.wav"
     },
     {
       "shot_id": "sh_04",
@@ -200,13 +200,13 @@
       "subtitle_text_en": "Yet some days felt heavy and invisible. Surrounded by rushing strangers, nobody seemed to see how hard he tried.",
       "generation_status": {
         "keyframe": "generated",
-        "video": "generated",
+        "video": "reused",
         "narration": "generated"
       },
       "seed": 4004,
-      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_04.png",
-      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_04.mp4",
-      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_04.wav"
+      "keyframe_path": "outputs/keyframes/sh_04.png",
+      "clip_path": "outputs/clips/sh_04.mp4",
+      "narration_path": "outputs/narration/sh_04.wav"
     },
     {
       "shot_id": "sh_05",
@@ -229,13 +229,13 @@
       "subtitle_text_en": "Exhausted and discouraged, there were moments when giving up felt easier than starting over one more time.",
       "generation_status": {
         "keyframe": "generated",
-        "video": "generated",
+        "video": "reused",
         "narration": "generated"
       },
       "seed": 4005,
-      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_05.png",
-      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_05.mp4",
-      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_05.wav"
+      "keyframe_path": "outputs/keyframes/sh_05.png",
+      "clip_path": "outputs/clips/sh_05.mp4",
+      "narration_path": "outputs/narration/sh_05.wav"
     },
     {
       "shot_id": "sh_06",
@@ -258,13 +258,13 @@
       "subtitle_text_en": "Then he remembered his mother’s voice and the promise he gave her—and a simple smile crossed his face.",
       "generation_status": {
         "keyframe": "generated",
-        "video": "generated",
+        "video": "reused",
         "narration": "generated"
       },
       "seed": 4006,
-      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_06.png",
-      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_06.mp4",
-      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_06.wav"
+      "keyframe_path": "outputs/keyframes/sh_06.png",
+      "clip_path": "outputs/clips/sh_06.mp4",
+      "narration_path": "outputs/narration/sh_06.wav"
     },
     {
       "shot_id": "sh_07",
@@ -287,13 +287,13 @@
       "subtitle_text_en": "He did not need applause to keep going. Remembering why he began gave him strength to push on anyway.",
       "generation_status": {
         "keyframe": "generated",
-        "video": "generated",
+        "video": "reused",
         "narration": "generated"
       },
       "seed": 4007,
-      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_07.png",
-      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_07.mp4",
-      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_07.wav"
+      "keyframe_path": "outputs/keyframes/sh_07.png",
+      "clip_path": "outputs/clips/sh_07.mp4",
+      "narration_path": "outputs/narration/sh_07.wav"
     },
     {
       "shot_id": "sh_08",
@@ -316,13 +316,13 @@
       "subtitle_text_en": "When he came home to share what he had built, he saw quiet pride shining in his mother’s eyes.",
       "generation_status": {
         "keyframe": "generated",
-        "video": "generated",
+        "video": "reused",
         "narration": "generated"
       },
       "seed": 4008,
-      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_08.png",
-      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_08.mp4",
-      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_08.wav"
+      "keyframe_path": "outputs/keyframes/sh_08.png",
+      "clip_path": "outputs/clips/sh_08.mp4",
+      "narration_path": "outputs/narration/sh_08.wav"
     },
     {
       "shot_id": "sh_09",
@@ -346,13 +346,13 @@
       "subtitle_text_en": "Seeing his mother content and proud made every hard day worth it—he had kept his word to her heart.",
       "generation_status": {
         "keyframe": "generated",
-        "video": "generated",
+        "video": "reused",
         "narration": "generated"
       },
       "seed": 4009,
-      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_09.png",
-      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_09.mp4",
-      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_09.wav"
+      "keyframe_path": "outputs/keyframes/sh_09.png",
+      "clip_path": "outputs/clips/sh_09.mp4",
+      "narration_path": "outputs/narration/sh_09.wav"
     }
   ],
   "closing_line": {
@@ -406,9 +406,9 @@
     "tts_model": "gemini-tts",
     "tts_voice": "TBD after listening to 3 candidates",
     "tts_style": "Calm, warm, unhurried storyteller",
-    "music_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/music/background.wav",
-    "full_narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/full.wav",
-    "subtitles_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/subtitles/en.srt",
+    "music_path": "outputs/music/background.wav",
+    "full_narration_path": "outputs/narration/full.wav",
+    "subtitles_path": "outputs/subtitles/en.srt",
     "mix": {
       "ducking": {
         "threshold": 0.02,
@@ -421,9 +421,9 @@
     }
   },
   "final": {
-    "vertical_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/final/heritage_vertical.mp4",
-    "horizontal_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/final/heritage_horizontal.mp4",
-    "end_card_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/end_card/end_card.png",
+    "vertical_path": "outputs/final/heritage_vertical.mp4",
+    "horizontal_path": "outputs/final/heritage_horizontal.mp4",
+    "end_card_path": "outputs/end_card/end_card.png",
     "end_card_text": "Made with AI",
     "end_card_seconds": 3
   }
