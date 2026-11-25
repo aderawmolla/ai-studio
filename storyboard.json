@@ -1,0 +1,191 @@
+{
+  "project": {
+    "topic": "Lalibela rock-hewn churches",
+    "location": "Lalibela, Amhara Region, Ethiopia",
+    "target_audience": "Young adults interested in African heritage",
+    "film_language": "en",
+    "narration_language": "en",
+    "visual_style": "Cinematic documentary, warm earth tones, golden hour light",
+    "target_duration_seconds": 75,
+    "aspect_ratios": [
+      "9:16",
+      "16:9"
+    ],
+    "creative_direction": "Respectful, educational tone; distinguish UNESCO-documented facts from artistic reconstruction.",
+    "music_prompt": "Ambient Ethiopian-inspired strings and krar, meditative, 75 seconds, no vocals"
+  },
+  "metadata": {
+    "version": 1,
+    "historical_notes": "Lalibela churches are attributed to King Lalibela (13th century); UNESCO World Heritage since 1978.",
+    "creative_notes": "Interior lighting and crowd scenes are interpretive reconstructions."
+  },
+  "references": {
+    "loc_lalibela": {
+      "id": "loc_lalibela",
+      "type": "location",
+      "description": "Exterior of Bet Giyorgis church, distinctive cross-shaped monolithic structure",
+      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/loc_lalibela.png",
+      "generation_status": "reused"
+    },
+    "char_guide": {
+      "id": "char_guide",
+      "type": "character",
+      "description": "Local heritage guide in modest traditional dress, neutral expression",
+      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/char_guide.png",
+      "generation_status": "reused"
+    }
+  },
+  "scenes": [
+    {
+      "scene_id": "sc_open",
+      "title": "Opening",
+      "order": 0
+    },
+    {
+      "scene_id": "sc_heart",
+      "title": "Heart of Lalibela",
+      "order": 1
+    },
+    {
+      "scene_id": "sc_close",
+      "title": "Closing reflection",
+      "order": 2
+    }
+  ],
+  "shots": [
+    {
+      "shot_id": "sh_01",
+      "scene_id": "sc_open",
+      "shot_order": 0,
+      "duration_seconds": 12,
+      "narration_text": "High in the Ethiopian highlands, eleven medieval churches were carved from living rock.",
+      "visual_description": "Wide aerial-style view of Lalibela landscape at sunrise",
+      "image_prompt": "Lalibela Ethiopia rock churches sunrise aerial cinematic documentary",
+      "video_prompt": "Slow push in over misty highlands toward ancient stone churches",
+      "camera_movement": "slow push in",
+      "character_refs": [],
+      "location_refs": [
+        "loc_lalibela"
+      ],
+      "subtitle_text_en": "High in the Ethiopian highlands, eleven medieval churches were carved from living rock.",
+      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_01.png",
+      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_01.mp4",
+      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_01.wav",
+      "generation_status": {
+        "keyframe": "reused",
+        "video": "reused",
+        "narration": "reused"
+      }
+    },
+    {
+      "shot_id": "sh_02",
+      "scene_id": "sc_heart",
+      "shot_order": 1,
+      "duration_seconds": 18,
+      "narration_text": "King Lalibela's vision turned stone into sanctuary—facts we know from UNESCO records, not legend alone.",
+      "visual_description": "Bet Giyorgis exterior with guide gesturing toward facade",
+      "image_prompt": "Bet Giyorgis Lalibela cross-shaped church heritage guide documentary",
+      "video_prompt": "Gentle orbit around church facade, dust motes in sun",
+      "camera_movement": "orbit left",
+      "character_refs": [
+        "char_guide"
+      ],
+      "location_refs": [
+        "loc_lalibela"
+      ],
+      "subtitle_text_en": "King Lalibela's vision turned stone into sanctuary—facts we know from UNESCO records.",
+      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_02.png",
+      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_02.mp4",
+      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_02.wav",
+      "generation_status": {
+        "keyframe": "reused",
+        "video": "reused",
+        "narration": "reused"
+      }
+    },
+    {
+      "shot_id": "sh_03",
+      "scene_id": "sc_heart",
+      "shot_order": 2,
+      "duration_seconds": 20,
+      "narration_text": "Inside, pilgrims still walk tunnels and arches—a living heritage site, not a museum frozen in time.",
+      "visual_description": "Stylized interior corridor with candlelight (creative interpretation)",
+      "image_prompt": "Rock-hewn church interior Ethiopia candlelight pilgrims silhouette artistic",
+      "video_prompt": "Tracking shot through carved corridor toward light",
+      "camera_movement": "tracking forward",
+      "character_refs": [],
+      "location_refs": [
+        "loc_lalibela"
+      ],
+      "subtitle_text_en": "Inside, pilgrims still walk tunnels and arches—a living heritage site.",
+      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_03.png",
+      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_03.mp4",
+      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_03.wav",
+      "generation_status": {
+        "keyframe": "reused",
+        "video": "reused",
+        "narration": "reused"
+      }
+    },
+    {
+      "shot_id": "sh_04",
+      "scene_id": "sc_close",
+      "shot_order": 3,
+      "duration_seconds": 15,
+      "narration_text": "These stones remind us: heritage endures when communities protect and share their stories.",
+      "visual_description": "Silhouette of guide against sunset over Lalibela",
+      "image_prompt": "Heritage guide silhouette Lalibela sunset emotional documentary",
+      "video_prompt": "Slow crane up from guide to wide sunset vista",
+      "camera_movement": "crane up",
+      "character_refs": [
+        "char_guide"
+      ],
+      "location_refs": [
+        "loc_lalibela"
+      ],
+      "subtitle_text_en": "Heritage endures when communities protect and share their stories.",
+      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_04.png",
+      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_04.mp4",
+      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_04.wav",
+      "generation_status": {
+        "keyframe": "reused",
+        "video": "reused",
+        "narration": "reused"
+      }
+    },
+    {
+      "shot_id": "sh_05",
+      "scene_id": "sc_close",
+      "shot_order": 4,
+      "duration_seconds": 10,
+      "narration_text": "Lalibela invites us to listen—to rock, to faith, to history still being written.",
+      "visual_description": "Close detail of carved stone cross",
+      "image_prompt": "Carved stone cross detail Lalibela macro warm light",
+      "video_prompt": "Macro slow pan across stone cross texture",
+      "camera_movement": "macro pan",
+      "character_refs": [],
+      "location_refs": [
+        "loc_lalibela"
+      ],
+      "subtitle_text_en": "Lalibela invites us to listen—to rock, to faith, to history still being written.",
+      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_05.png",
+      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_05.mp4",
+      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_05.wav",
+      "generation_status": {
+        "keyframe": "reused",
+        "video": "reused",
+        "narration": "reused"
+      }
+    }
+  ],
+  "audio": {
+    "music_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/music/background.wav",
+    "full_narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/full.wav",
+    "subtitles_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/subtitles/en.srt"
+  },
+  "final": {
+    "vertical_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/final/heritage_vertical.mp4",
+    "horizontal_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/final/heritage_horizontal.mp4",
+    "end_card_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/end_card/end_card.png"
+  }
+}

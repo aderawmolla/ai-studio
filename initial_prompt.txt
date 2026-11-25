@@ -1,0 +1,622 @@
+# Project Implementation Prompt: AI-Content Generation — The Heritage Short
+
+Act as a senior Python software engineer, AI engineer, and technical architect. Help me design and implement a complete, reproducible AI-content-generation pipeline for my academic assignment, **AI-Content Generation: The Heritage Short**.
+
+Your responsibility is to help me build the actual working application, not just produce an architecture document or a prototype.
+
+## 1. First, understand the assignment
+
+Before writing implementation code:
+
+1. Inspect the original assignment brief in the project files.
+2. Extract every technical requirement, expected deliverable, evaluation criterion, and constraint.
+3. Identify the mandatory documentation and submission requirements.
+4. Create a requirements traceability checklist mapping each requirement to the feature, implementation file, and evidence needed.
+5. Identify any ambiguity or missing information rather than making assumptions.
+6. Propose an implementation plan that satisfies the original assignment.
+
+Keep the original assignment brief unchanged and preserve it in:
+
+`docs/ASSIGNMENT_BRIEF.md`
+
+The original assignment requirements take priority over this implementation prompt whenever there is a conflict.
+
+## 2. Main project objective
+
+Build a Python application that orchestrates an AI-powered film-production pipeline.
+
+The application must take a heritage topic and creative instructions as input and produce:
+
+- A 60–90-second heritage short film.
+- A vertical 9:16 MP4.
+- A horizontal 16:9 MP4, properly reframed rather than stretched.
+- Narration in the selected language.
+- English subtitles.
+- Original background music with narration ducking.
+- An AI-generated end card.
+
+The application must coordinate AI models and media-processing tools through a reproducible workflow.
+
+The system must support independent generation, validation, caching, regeneration, error handling, and final assembly.
+
+## 3. Architecture preference: feature-based modular structure
+
+I want a modular, feature-oriented project structure.
+
+Do not put every Python file in the root directory.
+
+Do not create a separate file for every small function or class.
+
+Instead, group related functionality into feature folders. Each feature folder should contain the implementation files needed for that feature.
+
+For example:
+
+- Story generation functionality belongs in `generators/story/`.
+- Image and keyframe generation belongs in `generators/image/`.
+- Video generation belongs in `generators/video/`.
+- Narration, music, and subtitle generation belong in `generators/audio/`.
+- Final video assembly belongs in `generators/assembly/`.
+
+Keep the application simple and understandable. Use a small number of meaningful files inside each feature folder.
+
+### Proposed project structure
+
+```text
+heritage-short/
+│
+├── main.py
+├── config.py
+├── requirements.txt
+├── .env.example
+├── .gitignore
+│
+├── storyboard.json
+│
+├── core/
+│   ├── __init__.py
+│   ├── pipeline.py
+│   ├── cache.py
+│   ├── dependency.py
+│   ├── logger.py
+│   └── registry.py
+│
+├── generators/
+│   ├── __init__.py
+│   │
+│   ├── story/
+│   │   ├── __init__.py
+│   │   ├── generator.py
+│   │   └── prompts.py
+│   │
+│   ├── image/
+│   │   ├── __init__.py
+│   │   ├── generator.py
+│   │   ├── references.py
+│   │   └── prompts.py
+│   │
+│   ├── video/
+│   │   ├── __init__.py
+│   │   ├── generator.py
+│   │   └── prompts.py
+│   │
+│   ├── audio/
+│   │   ├── __init__.py
+│   │   ├── narration.py
+│   │   ├── music.py
+│   │   └── subtitles.py
+│   │
+│   └── assembly/
+│       ├── __init__.py
+│       ├── assembler.py
+│       └── end_card.py
+│
+├── providers/
+│   ├── __init__.py
+│   ├── base.py
+│   ├── gemini.py
+│   ├── flux.py
+│   ├── wan.py
+│   ├── tts.py
+│   └── ace_step.py
+│
+├── validation/
+│   ├── __init__.py
+│   ├── storyboard.py
+│   ├── media.py
+│   └── final_output.py
+│
+├── schemas/
+│   └── storyboard.schema.json
+│
+├── outputs/
+│   ├── references/
+│   ├── keyframes/
+│   ├── clips/
+│   ├── narration/
+│   ├── music/
+│   ├── subtitles/
+│   └── final/
+│
+├── cache/
+│
+├── logs/
+│   └── runs.jsonl
+│
+├── docs/
+│   ├── ASSIGNMENT_BRIEF.md
+│   ├── PROJECT_SPEC.md
+│   ├── ARCHITECTURE.md
+│   ├── DESIGN.md
+│   ├── EXPERIMENTS.md
+│   ├── FAILURES.md
+│   ├── COSTS.md
+│   ├── ETHICS.md
+│   └── SUBMISSION_CHECKLIST.md
+│
+└── tests/
+    ├── test_storyboard.py
+    ├── test_cache.py
+    ├── test_pipeline.py
+    └── test_validation.py
+```
+
+This is the proposed structure, not a requirement to create unnecessary files. Inspect the assignment and adjust the structure when technically justified.
+
+### Responsibilities of each major folder
+
+**`core/` — Application orchestration**
+
+Responsible for coordinating the workflow, managing dependencies, caching generated outputs, logging execution, and registering generation providers.
+
+**`generators/` — Feature implementations**
+
+Each folder implements one major generation feature.
+
+- `story/`: Generate the story, narration script, scene descriptions, and storyboard.
+- `image/`: Generate character references, locations, objects, and shot keyframes.
+- `video/`: Generate moving clips from keyframe images and motion prompts.
+- `audio/`: Generate narration, original music, and subtitles.
+- `assembly/`: Combine video and audio, add subtitles, create end cards, and export final formats.
+
+**`providers/` — External model integrations**
+
+Keep communication with external AI models separate from feature logic.
+
+The generator should not be tightly coupled to one AI provider.
+
+For example, the video generator should call a provider interface rather than directly implementing all Wan-specific API communication.
+
+**`validation/` — Quality and requirement checks**
+
+Validate storyboard structure, generated media, and final film specifications.
+
+**`schemas/` — Data contracts**
+
+Define the expected structure of storyboard data and other shared contracts.
+
+**`outputs/` — Generated artifacts**
+
+Store all intermediate and final media in predictable locations.
+
+**`docs/` — Assignment documentation**
+
+Keep all mandatory assignment documentation organized and up to date.
+
+**`tests/` — Automated testing**
+
+Test the important application behavior, including validation, caching, dependencies, and orchestration.
+
+## 4. Central source of truth: storyboard.json
+
+The storyboard must be the central data contract between all generation stages.
+
+Do not allow each generator to independently invent its own scene data.
+
+Every shot should have a stable ID and contain the information required by downstream generators.
+
+The structure should support fields such as:
+
+- Shot ID.
+- Scene ID.
+- Shot order.
+- Duration.
+- Narration text.
+- Visual description.
+- Image-generation prompt.
+- Video-generation prompt.
+- Camera movement.
+- Character and location references.
+- Subtitle text or references.
+- Generation status.
+- Output artifact references.
+
+Use a JSON Schema to validate the storyboard.
+
+Generators must read their inputs from the storyboard and save their outputs using predictable paths.
+
+Changes to one shot must not unintentionally affect other shots.
+
+## 5. Required generation workflow
+
+Implement the following orchestrated stages.
+
+### Stage 1: Project configuration
+
+Allow the user to configure:
+
+- Heritage topic.
+- Location or cultural context.
+- Target audience.
+- Film language.
+- Narration language.
+- Visual style.
+- Film duration.
+- Aspect ratios.
+- Creative direction.
+
+### Stage 2: Story and script generation
+
+Use Gemini or a suitable configured provider to:
+
+- Research or organize supplied historical information.
+- Generate the story concept.
+- Create the narration script.
+- Divide the story into scenes.
+- Generate initial visual descriptions.
+
+Historical claims must be distinguishable from creative interpretation. Do not invent historical facts or present unsupported claims as verified.
+
+### Stage 3: Storyboard generation
+
+Convert the approved story into structured shots.
+
+Validate:
+
+- Shot IDs and ordering.
+- Duration.
+- Narration.
+- Visual descriptions.
+- Generation prompts.
+- References.
+- Required fields.
+
+The total film duration must fit the assignment's 60–90-second requirement.
+
+### Stage 4: Reference and image generation
+
+Use FLUX or an interchangeable image-generation provider.
+
+Support:
+
+- Character reference images.
+- Location references.
+- Object references.
+- Visual consistency.
+- Individual shot keyframes.
+
+Save each image with a predictable filename and record its location in the generation metadata.
+
+### Stage 5: Video generation
+
+Use Wan 2.2 TI2V-5B or another configurable provider.
+
+For every shot:
+
+1. Load the correct keyframe.
+2. Load the motion prompt.
+3. Submit the generation request.
+4. Handle asynchronous processing if necessary.
+5. Retrieve the result.
+6. Validate the video.
+7. Save the clip.
+8. Update the generation record.
+
+Do not assume that every provider exposes the same API. Keep provider-specific logic isolated.
+
+### Stage 6: Audio generation
+
+Implement separate functionality for:
+
+**Narration**
+- Convert the approved narration script into speech.
+- Support the selected language.
+- Save audio per scene or shot where practical.
+- Validate duration and file integrity.
+
+**Music**
+- Generate original background music using ACE-Step or another configurable provider.
+- Support creative descriptions, duration, and style.
+- Ensure the music can be mixed beneath narration.
+
+**Subtitles**
+- Generate English subtitles from the narration.
+- Synchronize subtitles with audio.
+- Export a suitable subtitle format such as SRT.
+
+### Stage 7: Media validation
+
+Validate generated outputs before assembly.
+
+Check:
+
+- Missing files.
+- Unsupported media formats.
+- Invalid dimensions.
+- Corrupted video or audio.
+- Missing shot outputs.
+- Unexpected duration.
+- Subtitle timing.
+- Audio availability.
+
+Provide understandable error messages and record validation results.
+
+### Stage 8: Film assembly
+
+Use FFmpeg to:
+
+- Arrange shots in storyboard order.
+- Normalize video dimensions and frame rates.
+- Synchronize narration.
+- Mix original music with narration ducking.
+- Add English subtitles.
+- Add the AI-generated end card.
+- Produce the final vertical film.
+- Reframe and produce the horizontal film.
+
+Do not stretch a vertical video to create a horizontal video.
+
+### Stage 9: Final validation
+
+Check that both exported videos:
+
+- Are valid playable MP4 files.
+- Have the correct aspect ratios.
+- Are 60–90 seconds long.
+- Have synchronized narration.
+- Have background music.
+- Have readable English subtitles.
+- Include the end card.
+
+Generate a final validation report.
+
+## 6. Model and provider strategy
+
+The intended model choices are:
+
+- Gemini: story, script, translation, and potentially narration.
+- FLUX: references and keyframe images.
+- Wan 2.2 TI2V-5B: image-to-video generation.
+- ACE-Step 1.5: original music generation.
+- FFmpeg: media processing and assembly.
+
+Treat these as configurable integrations, not hardcoded assumptions.
+
+Before implementing a provider:
+
+1. Check its current official documentation.
+2. Verify the model identifier and API requirements.
+3. Check whether it requires a local GPU or hosted GPU.
+4. Check current pricing, free-tier limitations, and licensing.
+5. Implement the integration based on its actual interface.
+
+Never assume unlimited free API usage or GPU availability.
+
+Support mock providers so that the pipeline can be tested without expensive model calls or GPU access.
+
+## 7. Critical requirement: caching and selective regeneration
+
+Implement content-based caching and dependency tracking.
+
+The application must understand which outputs depend on which inputs.
+
+Examples:
+
+| Changed input | Expected regeneration |
+|---|---|
+| One shot's visual prompt | Its keyframe and video |
+| One shot's motion prompt | Its video |
+| Narration script | Narration and dependent subtitles |
+| Music prompt | Music |
+| Subtitle translation | Subtitles |
+| Export settings | Final assembly only |
+
+If Shot 3 changes, Shots 1, 2, 4, and 5 must remain cached.
+
+The system should calculate fingerprints or hashes from relevant generation inputs.
+
+Do not regenerate unchanged assets.
+
+Record why an asset was generated, reused, or regenerated.
+
+## 8. Reliability and error handling
+
+The pipeline must handle:
+
+- API failures.
+- Rate limits.
+- Timeouts.
+- Missing credentials.
+- GPU unavailability.
+- Invalid model responses.
+- Corrupted media.
+- Interrupted generation.
+- Missing intermediate outputs.
+
+Implement appropriate retries and timeouts.
+
+Do not retry permanent failures indefinitely.
+
+A failed stage should not silently mark the entire project as successful.
+
+Allow the user to resume execution from the last successful stage.
+
+## 9. CLI interface
+
+Provide a simple command-line interface through `main.py`.
+
+Proposed commands:
+
+```bash
+python main.py validate
+python main.py story
+python main.py references
+python main.py images
+python main.py videos
+python main.py audio
+python main.py validate-media
+python main.py assemble
+python main.py final-check
+python main.py generate
+```
+
+The `generate` command should orchestrate all required stages in the correct dependency order.
+
+Support running individual features without executing the entire pipeline.
+
+Provide helpful command output and clear error messages.
+
+## 10. Assignment evaluation and evidence
+
+The implementation must support the actual assessment requirements.
+
+Create and maintain these documents:
+
+- `README.md`: setup, installation, configuration, execution, and reproduction.
+- `docs/ARCHITECTURE.md`: architecture and generation workflow.
+- `docs/DESIGN.md`: audience, creative intent, audience-testing process, and changes resulting from feedback.
+- `docs/EXPERIMENTS.md`: approximately 10 actual experiments, hypotheses, changes, and results.
+- `docs/FAILURES.md`: actual failures, debugging attempts, and solutions.
+- `docs/COSTS.md`: API usage, generation time, GPU minutes, and cost estimates.
+- `docs/ETHICS.md`: consent, AI disclosure, privacy, and model/data licensing.
+- `docs/SUBMISSION_CHECKLIST.md`: mapping of assignment requirements to implementation and evidence.
+
+Do not fabricate experiment results, audience feedback, costs, consent, or licenses.
+
+### Audience testing
+
+Support the two required rounds:
+
+1. Radio cut: test the audio-only story with at least three people.
+2. Near-final film: test the film with at least three people.
+
+Record genuine feedback and explain what was changed as a result.
+
+### Consent and ethics
+
+Do not use a real person's likeness or voice without recorded informed consent.
+
+Keep evidence of consent where required.
+
+Clearly disclose AI-generated content and check the licenses of the models and assets used.
+
+## 11. Testing strategy
+
+Create tests for:
+
+- Storyboard schema validation.
+- Missing or invalid shot fields.
+- Generation dependencies.
+- Cache reuse.
+- Selective regeneration.
+- Pipeline execution with mock providers.
+- Error handling.
+- Final output validation.
+
+Tests must not require expensive AI generation.
+
+The mock pipeline should be able to demonstrate the complete orchestration process using simulated outputs.
+
+## 12. Implementation approach — work incrementally
+
+Do not generate the entire application in one attempt.
+
+Work through these phases.
+
+**Phase 1 — Assignment analysis and architecture**
+
+- Inspect the original assignment.
+- Extract requirements.
+- Create the traceability checklist.
+- Propose the folder structure.
+- Explain the responsibilities of each folder.
+- Identify dependencies and external services.
+
+Wait for my approval before continuing.
+
+**Phase 2 — Project foundation**
+
+- Create the directory structure.
+- Implement configuration.
+- Define storyboard schema and sample storyboard.
+- Implement validation.
+- Create basic logging.
+- Set up tests.
+
+Use a small sample heritage project.
+
+Wait for my approval.
+
+**Phase 3 — Core orchestration and mock providers**
+
+- Implement the pipeline.
+- Implement provider interfaces.
+- Implement mock generators.
+- Implement dependency tracking.
+- Implement caching and resume behavior.
+- Demonstrate selective regeneration.
+
+Wait for my approval.
+
+**Phase 4 — Real AI integrations**
+
+Integrate one provider at a time, beginning with story generation, then image generation, video generation, and audio generation.
+
+Test each integration independently before moving to the next.
+
+**Phase 5 — Assembly and final outputs**
+
+Implement FFmpeg processing, vertical and horizontal exports, subtitles, narration mixing, music ducking, and end card generation.
+
+**Phase 6 — Testing, experimentation, and documentation**
+
+Complete the actual assignment evidence, audience testing, cost measurements, ethical documentation, and reproducibility checks.
+
+**Phase 7 — Final submission preparation**
+
+Verify all deliverables and provide a checklist showing exactly where each requirement has been satisfied.
+
+## 13. Engineering rules
+
+- Use Python with clear, maintainable code.
+- Use type hints where practical.
+- Use environment variables for secrets.
+- Never commit API keys.
+- Keep provider logic separate from feature logic.
+- Keep the storyboard as the shared source of truth.
+- Avoid unnecessary abstractions and excessive file splitting.
+- Do not duplicate functionality across generators.
+- Use meaningful function and variable names.
+- Add useful error messages and logging.
+- Make operations reproducible where the underlying model allows it.
+- Document model limitations and nondeterministic behavior.
+- Never claim a feature works until it has been tested.
+- Keep the application simple enough for me to understand and explain during an academic AI interview.
+
+## 14. First task
+
+Start with Phase 1 only.
+
+Inspect the assignment brief and present:
+
+1. Your understanding of the assignment.
+2. A complete requirements checklist.
+3. The proposed folder structure.
+4. The responsibility of every major folder and important file.
+5. The end-to-end execution flow.
+6. The external models, services, and infrastructure required.
+7. Potential technical risks and implementation challenges.
+8. A phased implementation plan.
+
+Do not start implementing the entire project yet.
+
+I want to review and approve the architecture before we move forward.
