@@ -41,5 +41,5 @@ Watch `logs/runs.jsonl` for lines with `"type": "model_call"`.
 ## Still manual (full assignment)
 
 1. **Wan 2.2** clips — Kaggle notebook → copy to `outputs/clips/`
-2. **ACE-Step** music — Kaggle notebook → `outputs/music/background.wav` then `python3 main.py assemble`
+2. **ACE-Step** music — Kaggle notebook → set `MUSIC_FILE=/path/to/track.wav` in `.env`, then `python3 main.py music` and `python3 main.py assemble`
 3. **8–12 shots**, your story, **DESIGN.md** audience tests

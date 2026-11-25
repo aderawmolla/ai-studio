@@ -66,6 +66,68 @@ def make_tone_wav(path: Path, duration: float, freq: float = 220.0) -> None:
     subprocess.run(cmd, check=True, capture_output=True)
 
 
+def make_heritage_ambient_wav(path: Path, duration: float) -> None:
+    """Soft documentary bed (mock ACE-Step): pentatonic layers + warm noise, ducking-safe."""
+    ffmpeg = shutil.which("ffmpeg")
+    if not ffmpeg:
+        raise RuntimeError("ffmpeg not found on PATH (needed for mock music)")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    dur = max(float(duration), 1.0)
+    fade_out = max(dur - 7.0, 1.0)
+    # A-centered pentatonic (Hz): earthy low register, no harsh lead tone
+    layers: list[tuple[float, float]] = [
+        (82.41, 0.045),
+        (110.0, 0.07),
+        (130.81, 0.06),
+        (164.81, 0.04),
+        (196.0, 0.028),
+        (220.0, 0.02),
+    ]
+    cmd: list[str] = [ffmpeg, "-y"]
+    for freq, _ in layers:
+        cmd.extend(
+            [
+                "-f",
+                "lavfi",
+                "-i",
+                f"sine=frequency={freq}:duration={dur}:sample_rate=44100",
+            ]
+        )
+    cmd.extend(
+        [
+            "-f",
+            "lavfi",
+            "-i",
+            f"anoisesrc=duration={dur}:color=pink:sample_rate=44100:amplitude=0.012",
+        ]
+    )
+    noise_idx = len(layers)
+    filters: list[str] = []
+    for i, (_, vol) in enumerate(layers):
+        filters.append(f"[{i}:a]volume={vol},lowpass=f=900,highpass=f=55[a{i}]")
+    filters.append(f"[{noise_idx}:a]lowpass=f=320,volume=0.06[apad]")
+    mix_in = "".join(f"[a{i}]" for i in range(len(layers))) + "[apad]"
+    n_in = len(layers) + 1
+    filters.append(
+        f"{mix_in}amix=inputs={n_in}:duration=first:normalize=0,"
+        f"afade=t=in:st=0:d=5,afade=t=out:st={fade_out:.3f}:d=7,"
+        f"lowpass=f=2200,acompressor=threshold=-24dB:ratio=3:attack=50:release=400,"
+        f"volume=0.55[aout]"
+    )
+    cmd.extend(
+        [
+            "-filter_complex",
+            ";".join(filters),
+            "-map",
+            "[aout]",
+            "-ac",
+            "1",
+            str(path),
+        ]
+    )
+    subprocess.run(cmd, check=True, capture_output=True)
+
+
 def _ken_burns_filter(
     config: AppConfig,
     camera_movement: str,

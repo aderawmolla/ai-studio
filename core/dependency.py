@@ -36,8 +36,11 @@ def shot_narration_inputs(shot: dict[str, Any], lang: str) -> dict[str, Any]:
 
 
 def music_inputs(project: dict[str, Any], duration: float) -> dict[str, Any]:
+    meta = project.get("music_metadata")
     return {
         "music_prompt": project.get("music_prompt", ""),
+        "music_metadata": meta if isinstance(meta, dict) else {},
+        "music_mock_engine": "heritage_ambient_v1",
         "visual_style": project.get("visual_style", ""),
         "duration": duration,
     }

@@ -30,7 +30,10 @@ class PipelineStage(str, Enum):
     REFERENCES = "references"
     IMAGES = "images"
     VIDEOS = "videos"
-    AUDIO = "audio"
+    NARRATION = "narration"
+    MUSIC = "music"
+    SUBTITLES = "subtitles"
+    AUDIO = "audio"  # legacy: runs narration + music + subtitles
     VALIDATE_MEDIA = "validate-media"
     ASSEMBLE = "assemble"
     FINAL_CHECK = "final-check"
@@ -42,7 +45,9 @@ STAGE_ORDER: list[PipelineStage] = [
     PipelineStage.REFERENCES,
     PipelineStage.IMAGES,
     PipelineStage.VIDEOS,
-    PipelineStage.AUDIO,
+    PipelineStage.NARRATION,
+    PipelineStage.MUSIC,
+    PipelineStage.SUBTITLES,
     PipelineStage.VALIDATE_MEDIA,
     PipelineStage.ASSEMBLE,
     PipelineStage.FINAL_CHECK,
@@ -89,7 +94,7 @@ class Pipeline:
     def _resume_hint(self, stage: PipelineStage) -> str:
         return f"python3 run_film.py --resume {stage.value}"
 
-    def run_stage(self, stage: PipelineStage) -> bool:
+    def run_stage(self, stage: PipelineStage, *, force_music: bool = False) -> bool:
         try:
             data = self._load()
             if stage == PipelineStage.VALIDATE:
@@ -114,6 +119,19 @@ class Pipeline:
                 data = run_keyframes(data, self.config, self.registry, self.cache, self.log)
             elif stage == PipelineStage.VIDEOS:
                 data = run_videos(data, self.config, self.registry, self.cache, self.log)
+            elif stage == PipelineStage.NARRATION:
+                data = run_narration(data, self.config, self.registry, self.cache, self.log)
+            elif stage == PipelineStage.MUSIC:
+                data = run_music(
+                    data,
+                    self.config,
+                    self.registry,
+                    self.cache,
+                    self.log,
+                    force=force_music,
+                )
+            elif stage == PipelineStage.SUBTITLES:
+                data = run_subtitles(data, self.config, self.cache, self.log)
             elif stage == PipelineStage.AUDIO:
                 data = run_narration(data, self.config, self.registry, self.cache, self.log)
                 data = run_music(data, self.config, self.registry, self.cache, self.log)
@@ -177,6 +195,8 @@ class Pipeline:
 
 
 def stage_from_cli(name: str) -> PipelineStage:
+    if name == "audio":
+        return PipelineStage.NARRATION
     try:
         return PipelineStage(name)
     except ValueError as exc:

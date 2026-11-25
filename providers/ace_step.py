@@ -6,7 +6,7 @@ from pathlib import Path
 
 from config import AppConfig
 from providers.base import MusicProvider, ProviderResult
-from providers.mock_media import make_tone_wav
+from providers.mock_media import make_heritage_ambient_wav
 
 
 class MockAceStepProvider(MusicProvider):
@@ -15,8 +15,8 @@ class MockAceStepProvider(MusicProvider):
 
     def generate_music(self, prompt: str, output_path: Path, duration: float) -> ProviderResult:
         try:
-            make_tone_wav(output_path, duration, freq=196.0)
-            return ProviderResult(success=True, path=output_path, message="mock music")
+            make_heritage_ambient_wav(output_path, duration)
+            return ProviderResult(success=True, path=output_path, message="mock heritage ambient")
         except Exception as exc:
             return ProviderResult(success=False, message=str(exc))
 

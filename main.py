@@ -32,7 +32,13 @@ def build_parser() -> argparse.ArgumentParser:
     logs.add_argument("--summary", action="store_true", help="Count INFO/WARN/ERROR only")
 
     for cmd in stages:
-        sub.add_parser(cmd, help=f"Run stage only: {cmd}")
+        stage_p = sub.add_parser(cmd, help=f"Run stage only: {cmd}")
+        if cmd == PipelineStage.MUSIC.value:
+            stage_p.add_argument(
+                "--reuse",
+                action="store_true",
+                help="Keep cache / existing background.wav (default: always regenerate)",
+            )
 
     gen = sub.add_parser("generate", help="Same as run_film.py — full pipeline")
     gen.add_argument(
@@ -86,7 +92,8 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"  Detail: {pipeline.last_error_detail}")
         return 0 if ok else 1
 
-    ok = pipeline.run_stage(stage_from_cli(args.command))
+    force_music = args.command == PipelineStage.MUSIC.value and not getattr(args, "reuse", False)
+    ok = pipeline.run_stage(stage_from_cli(args.command), force_music=force_music)
     if not ok and pipeline.last_error:
         print(f"\nFailed at stage '{pipeline.last_error_stage}'")
         print(f"  Reason: {pipeline.last_error}")

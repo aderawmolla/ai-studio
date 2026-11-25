@@ -75,10 +75,13 @@ python3 main.py logs --summary  # INFO / WARN / ERROR counts
 | 3 | references | Character/location reference PNGs | `generators/image/generator.py` |
 | 4 | images | Per-shot keyframes | `generators/image/generator.py` |
 | 5 | videos | Image-to-video clips | `generators/video/generator.py` |
-| 6 | audio | TTS narration, music, English SRT | `generators/audio/*.py` |
-| 7 | validate-media | Files exist before edit | `validation/media.py` |
-| 8 | assemble | Concat, ducking, burn subs, 9:16 + 16:9 | `generators/assembly/assembler.py` |
-| 9 | final-check | MP4 aspect, duration, report | `validation/final_output.py` |
+| 6 | narration | TTS per shot | `generators/audio/narration.py` |
+| 7 | music | Background track (ACE-Step / your WAV) | `generators/audio/music.py` |
+| 8 | subtitles | English SRT | `generators/audio/subtitles.py` |
+| — | audio | All three above (legacy one-shot) | `generators/audio/*.py` |
+| 9 | validate-media | Files exist before edit | `validation/media.py` |
+| 10 | assemble | Concat, ducking, burn subs, 9:16 + 16:9 | `generators/assembly/assembler.py` |
+| 11 | final-check | MP4 aspect, duration, report | `validation/final_output.py` |
 
 **See progress anytime:** `python3 main.py status`
 
@@ -132,3 +135,6 @@ heritage-film/
 | View logs | `python3 main.py logs` |
 | Unit tests | `make test` |
 | One stage only | `python3 main.py assemble` |
+| Music only | `python3 main.py music` (always regenerates; use `--reuse` to keep cache) |
+| Use your own music file | Set `MUSIC_FILE=/path/to/track.wav` in `.env`, then `python3 main.py music` |
+| All audio (legacy) | `python3 main.py audio` |
