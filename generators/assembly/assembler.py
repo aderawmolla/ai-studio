@@ -12,7 +12,8 @@ from core.cache import ArtifactCache
 from core.dependency import assembly_inputs, fingerprint
 from core.logger import RunLogger
 from core.duration import END_CARD_SECONDS, film_duration
-from generators.assembly.end_card import generate_end_card
+from core.registry import ProviderRegistry
+from generators.assembly.end_card import resolve_end_card_image
 
 
 def run_assembly(
@@ -20,6 +21,7 @@ def run_assembly(
     config: AppConfig,
     cache: ArtifactCache,
     log: RunLogger,
+    registry: ProviderRegistry | None = None,
 ) -> dict[str, Any]:
     shots = sorted(storyboard.get("shots", []), key=lambda s: s["shot_order"])
     fp = fingerprint(assembly_inputs(storyboard, True, True))
@@ -33,8 +35,12 @@ def run_assembly(
         log.info("assemble", "Reused final outputs")
         return storyboard
 
-    end_card_img = generate_end_card(config, storyboard["project"]["topic"])
+    end_card_img = resolve_end_card_image(config, storyboard, registry)
     storyboard.setdefault("final", {})["end_card_path"] = str(end_card_img)
+    if config.end_card_image or storyboard.get("final", {}).get("end_card_image_path"):
+        log.info("assemble", "End card from custom image", path=str(end_card_img))
+    elif storyboard.get("project", {}).get("end_card_prompt") and registry and not config.use_mock_providers:
+        log.info("assemble", "End card generated with image provider", path=str(end_card_img))
     end_card_clip = config.outputs_dir / "end_card" / "end_card.mp4"
     from providers.mock_media import make_static_video_from_image
 

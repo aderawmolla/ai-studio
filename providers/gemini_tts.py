@@ -62,7 +62,8 @@ class GeminiTTSProvider(TextToSpeechProvider):
                 ),
             ),
         )
-        style = f"Calm, clear documentary narration in language {language}."
+        lang_note = "Amharic (አማርኛ)" if str(language).lower() in ("am", "amh", "amharic") else language
+        style = f"Calm, clear documentary narration in {lang_note}. Speak naturally in that language."
 
         try:
             interaction = client.interactions.create(

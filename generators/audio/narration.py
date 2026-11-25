@@ -83,22 +83,6 @@ def run_narration(
         key = f"narration:{sid}"
         cached = cache.lookup(key, fp)
         status = shot.setdefault("generation_status", {})
-        if not cached and out.is_file():
-            try:
-                if _probe_audio_duration(config, out) > 0.5:
-                    _fit_narration_to_shot(config, out, float(shot["duration_seconds"]))
-                    cache.store(key, fp, out, reason="reused existing wav", stage="audio")
-                    shot["narration_path"] = str(out)
-                    status["narration"] = "reused"
-                    narration_paths.append(out)
-                    log.info(
-                        "audio",
-                        f"Narration {sid} (reused file on disk, skipped API)",
-                        path=str(out),
-                    )
-                    continue
-            except (subprocess.CalledProcessError, ValueError):
-                pass
         if cached:
             shot["narration_path"] = cached["path"]
             status["narration"] = "reused"

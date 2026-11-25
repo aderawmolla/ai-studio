@@ -95,8 +95,13 @@ class Pipeline:
             if stage == PipelineStage.VALIDATE:
                 result = validate_storyboard(data, self.config.schema_path)
                 if not result.ok:
+                    summary = result.errors[0] if result.errors else "Storyboard validation failed"
+                    detail = "; ".join(result.errors[:8])
+                    if len(result.errors) > 8:
+                        detail += f"; …and {len(result.errors) - 8} more"
                     for e in result.errors:
                         self.log.error("validate", e)
+                    self._record_failure("validate", summary, detail=detail)
                     return False
                 self.log.info("validate", "Storyboard OK")
                 return True
@@ -125,7 +130,7 @@ class Pipeline:
                 self._save(data)
                 return True
             elif stage == PipelineStage.ASSEMBLE:
-                data = run_assembly(data, self.config, self.cache, self.log)
+                data = run_assembly(data, self.config, self.cache, self.log, self.registry)
             elif stage == PipelineStage.FINAL_CHECK:
                 report = validate_final_outputs(data, self.config)
                 out_path = self.config.outputs_dir / "final" / "validation_report.json"

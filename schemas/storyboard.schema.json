@@ -20,12 +20,16 @@
       ],
       "additionalProperties": false,
       "properties": {
+        "title": { "type": "string" },
+        "logline": { "type": "string" },
+        "intent": { "type": "string" },
         "topic": { "type": "string", "minLength": 1 },
         "location": { "type": "string" },
         "target_audience": { "type": "string" },
         "film_language": { "type": "string" },
         "narration_language": { "type": "string" },
         "visual_style": { "type": "string" },
+        "style_block": { "type": "string" },
         "target_duration_seconds": { "type": "number", "minimum": 60, "maximum": 90 },
         "aspect_ratios": {
           "type": "array",
@@ -33,15 +37,23 @@
           "minItems": 1
         },
         "creative_direction": { "type": "string" },
-        "music_prompt": { "type": "string" }
+        "music_prompt": { "type": "string" },
+        "music_metadata": { "type": "object" },
+        "end_card_prompt": {
+          "type": "string",
+          "description": "Optional FLUX prompt for an AI end card when USE_MOCK_PROVIDERS=false"
+        }
       }
     },
     "metadata": {
       "type": "object",
+      "additionalProperties": true,
       "properties": {
         "version": { "type": "integer" },
         "historical_notes": { "type": "string" },
-        "creative_notes": { "type": "string" }
+        "creative_notes": { "type": "string" },
+        "ethics_notes": { "type": "string" },
+        "ai_disclosure": { "type": "string" }
       }
     },
     "references": {
@@ -54,7 +66,8 @@
           "type": { "type": "string", "enum": ["character", "location", "object"] },
           "description": { "type": "string" },
           "image_path": { "type": ["string", "null"] },
-          "generation_status": { "type": "string" }
+          "generation_status": { "type": "string" },
+          "seed": { "type": "integer" }
         }
       }
     },
@@ -93,6 +106,7 @@
           "scene_id": { "type": "string" },
           "shot_order": { "type": "integer", "minimum": 0 },
           "duration_seconds": { "type": "number", "exclusiveMinimum": 0 },
+          "reason": { "type": "string" },
           "narration_text": { "type": "string" },
           "visual_description": { "type": "string" },
           "image_prompt": { "type": "string" },
@@ -100,7 +114,9 @@
           "camera_movement": { "type": "string" },
           "character_refs": { "type": "array", "items": { "type": "string" } },
           "location_refs": { "type": "array", "items": { "type": "string" } },
+          "music_cue": { "type": "string" },
           "subtitle_text_en": { "type": "string" },
+          "seed": { "type": "integer" },
           "keyframe_path": { "type": ["string", "null"] },
           "clip_path": { "type": ["string", "null"] },
           "narration_path": { "type": ["string", "null"] },
@@ -115,20 +131,51 @@
         }
       }
     },
+    "closing_line": {
+      "type": "object",
+      "properties": {
+        "text": { "type": "string" },
+        "note": { "type": "string" },
+        "display_seconds": { "type": "number" }
+      }
+    },
+    "music_cues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cue_id": { "type": "string" },
+          "shots": { "type": "array", "items": { "type": "string" } },
+          "intent": { "type": "string" }
+        }
+      }
+    },
     "audio": {
       "type": "object",
+      "additionalProperties": true,
       "properties": {
         "music_path": { "type": ["string", "null"] },
         "full_narration_path": { "type": ["string", "null"] },
-        "subtitles_path": { "type": ["string", "null"] }
+        "subtitles_path": { "type": ["string", "null"] },
+        "tts_model": { "type": "string" },
+        "tts_voice": { "type": "string" },
+        "tts_style": { "type": "string" },
+        "mix": { "type": "object" }
       }
     },
     "final": {
       "type": "object",
+      "additionalProperties": true,
       "properties": {
         "vertical_path": { "type": ["string", "null"] },
         "horizontal_path": { "type": ["string", "null"] },
-        "end_card_path": { "type": ["string", "null"] }
+        "end_card_path": { "type": ["string", "null"] },
+        "end_card_image_path": {
+          "type": ["string", "null"],
+          "description": "Optional path to your own end-card image (PNG/JPG); also set via END_CARD_IMAGE"
+        },
+        "end_card_text": { "type": "string" },
+        "end_card_seconds": { "type": "number" }
       }
     }
   }

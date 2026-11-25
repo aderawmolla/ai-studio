@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import shutil
+from pathlib import Path
 from typing import Any
 
 from config import AppConfig
@@ -29,6 +31,20 @@ def run_music(
     if cached:
         storyboard.setdefault("audio", {})["music_path"] = cached["path"]
         log.info("audio", "Reused music")
+        return storyboard
+    if config.music_file_override:
+        src = Path(config.music_file_override).expanduser()
+        if src.is_file():
+            out.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, out)
+            storyboard.setdefault("audio", {})["music_path"] = str(out)
+            cache.store(key, fp, out, reason="manual MUSIC_FILE", stage="audio")
+            log.info("audio", "Using manual music file (ACE-Step / your WAV)", path=str(src))
+            return storyboard
+    if not config.ace_step_url and out.is_file():
+        storyboard.setdefault("audio", {})["music_path"] = str(out)
+        cache.store(key, fp, out, reason="existing background.wav", stage="audio")
+        log.info("audio", "Reused outputs/music/background.wav on disk", path=str(out))
         return storyboard
     result = registry.music.generate_music(prompt, out, total)
     if not result.success:

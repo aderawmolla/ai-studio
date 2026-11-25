@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import subprocess
+import json
 from pathlib import Path
 from typing import Any
 
@@ -10,6 +12,24 @@ from core.cache import ArtifactCache
 from core.dependency import fingerprint, shot_video_inputs
 from core.logger import RunLogger
 from core.registry import ProviderRegistry
+
+
+def _clip_duration(config: AppConfig, path: Path) -> float | None:
+    try:
+        cmd = [
+            config.ffprobe_path,
+            "-v",
+            "error",
+            "-show_entries",
+            "format=duration",
+            "-of",
+            "json",
+            str(path),
+        ]
+        out = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        return float(json.loads(out.stdout)["format"]["duration"])
+    except (subprocess.CalledProcessError, KeyError, ValueError, json.JSONDecodeError):
+        return None
 
 
 def run_videos(
@@ -34,6 +54,15 @@ def run_videos(
             status["video"] = "reused"
             log.info("videos", f"Reused clip {sid}")
             continue
+        if out.is_file():
+            dur = _clip_duration(config, out)
+            target = float(shot["duration_seconds"])
+            if dur is not None and abs(dur - target) <= 1.5:
+                shot["clip_path"] = str(out)
+                status["video"] = "reused"
+                cache.store(key, fp, out, reason="existing Wan/manual clip", stage="videos")
+                log.info("videos", f"Reused on-disk clip {sid} (Wan/manual)", path=str(out))
+                continue
         result = registry.video.generate_clip(
             Path(kf),
             shot["video_prompt"],

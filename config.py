@@ -60,6 +60,8 @@ class AppConfig:
     api_timeout_seconds: int = 120
     final_vertical_filename: str = "heritage_vertical.mp4"
     final_horizontal_filename: str = "heritage_horizontal.mp4"
+    end_card_image: str | None = None  # optional user PNG/JPG (see END_CARD_IMAGE)
+    music_file_override: str | None = None  # optional ACE-Step WAV (see MUSIC_FILE)
 
     def final_vertical_path(self) -> Path:
         return self.outputs_dir / "final" / self.final_vertical_filename
@@ -105,6 +107,8 @@ class AppConfig:
             final_horizontal_filename=os.getenv(
                 "FILM_OUTPUT_HORIZONTAL", "heritage_horizontal.mp4"
             ),
+            end_card_image=os.getenv("END_CARD_IMAGE"),
+            music_file_override=os.getenv("MUSIC_FILE"),
         )
 
     def ensure_dirs(self) -> None:

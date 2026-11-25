@@ -1,257 +1,430 @@
 {
   "project": {
-    "topic": "Addis Ababa — hills, history, and daily heritage",
-    "location": "Addis Ababa, Ethiopia",
-    "target_audience": "Young adults curious about urban African heritage",
-    "film_language": "en",
-    "narration_language": "en",
-    "visual_style": "Cinematic documentary, golden hour, bustling city and green hills, respectful tone",
-    "target_duration_seconds": 80,
+    "title": "The Smile That Carried Him",
+    "logline": "A young Ethiopian man tries path after path in the city, hits moments of exhaustion and invisibility where he nearly gives up, and keeps moving forward whenever a memory of his promise to his mother brings a quiet smile.",
+    "topic": "Perseverance through trial and invisibility fueled by a promise to one's mother and the fulfillment of making her proud",
+    "location": "Ethiopian highlands village and a bustling modern city",
+    "target_audience": "Young Ethiopians and diaspora viewers on phones navigating uncertain early careers, setbacks, and distance from family",
+    "intent": "Viewers should feel encouraged when progress feels slow or unseen, and moved by the quiet joy of keeping faith with the person who shaped them.",
+    "film_language": "am",
+    "narration_language": "am",
+    "visual_style": "Hand-painted illustration, warm gouache texture, soft grain, golden-hour light, earnest and uplifting tone",
+    "style_block": "hand-painted gouache illustration, warm earthy palette of ochre, terracotta and deep green, soft film grain, gentle golden light, stylized faces, not photorealistic",
+    "target_duration_seconds": 84,
     "aspect_ratios": [
       "9:16",
       "16:9"
     ],
-    "creative_direction": "Separate documented history from artistic reconstruction; no real people's likeness without consent.",
-    "music_prompt": "Instrumental Ethiopian jazz and krar undertones, urban and warm, meditative, 80 seconds, no vocals"
+    "creative_direction": "Fictional story. All characters are stylized illustrations, not likenesses of real people. Narration uses a stock Gemini TTS voice, never a cloned voice. Keep subjects near the centre of the frame so both aspect ratios work.",
+    "music_prompt": "Instrumental, warm and hopeful, Ethiopian pentatonic tizita-inspired melody on krar and soft strings, sparse and gentle texture, no strong lead melody under narration, no vocals",
+    "music_metadata": {
+      "bpm": 70,
+      "key": "A minor",
+      "time_signature": "4/4",
+      "duration_seconds": 84,
+      "instrumental": true,
+      "candidates_to_generate": 3
+    },
+    "end_card_prompt": "Hand-painted gouache end card, warm ochre and terracotta, stylized Ethiopian highland hills at golden hour, modest text area, title feel for short film The Smile That Carried Him, peaceful proud mood, vertical 9:16, no photorealistic faces"
   },
   "metadata": {
     "version": 1,
-    "historical_notes": "Addis Ababa founded as capital in late 19th century; seat of AU; diverse communities and languages.",
-    "creative_notes": "Crowd scenes and some interiors are stylized reconstructions, not news footage."
+    "ethics_notes": "Fictional characters, stylized illustrations, stock TTS voice. No real person's face or voice is used, so no consent record is required; record this reasoning in ETHICS.md.",
+    "creative_notes": "Narration timing is a first estimate (about 2.3 words per second). After generating TTS, measure each line and set shot durations from the real audio, then rerun.",
+    "ai_disclosure": "End card: Made with AI. Platform AI label switched on at posting."
   },
   "references": {
-    "loc_addis_hills": {
-      "id": "loc_addis_hills",
-      "type": "location",
-      "description": "Panoramic view of Addis Ababa from Entoto hills, city spread in valley, documentary wide shot",
-      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/loc_addis_hills.png",
-      "generation_status": "reused"
-    },
-    "char_narrator": {
-      "id": "char_narrator",
+    "char_biruk_young": {
+      "id": "char_biruk_young",
       "type": "character",
-      "description": "Young Ethiopian heritage storyteller, modest modern dress, warm expression, not a celebrity likeness",
-      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/char_narrator.png",
-      "generation_status": "reused"
+      "description": "Ethiopian young man of about twenty-two, lean, short curly dark hair, simple olive utility shirt and dark trousers, earnest eyes, gentle smile",
+      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/char_biruk_young.png",
+      "seed": 3101,
+      "generation_status": "generated"
+    },
+    "char_mother": {
+      "id": "char_mother",
+      "type": "character",
+      "description": "Ethiopian mother in her late forties to fifties, traditional handwoven white cotton netela shawl with subtle terracotta border over a dark dress, warm eyes, serene proud smile",
+      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/char_mother.png",
+      "seed": 3102,
+      "generation_status": "generated"
+    },
+    "loc_family_courtyard": {
+      "id": "loc_family_courtyard",
+      "type": "location",
+      "description": "Modest Ethiopian highland home courtyard with a low stone step, woven basket and clay coffee pot nearby, warm afternoon light, eucalyptus and green hills beyond",
+      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/loc_family_courtyard.png",
+      "seed": 3201,
+      "generation_status": "generated"
+    },
+    "loc_city_workshop": {
+      "id": "loc_city_workshop",
+      "type": "location",
+      "description": "Small cramped city workspace and shared room with a wooden workbench, stacked notebooks and sketches, one window overlooking city rooftops",
+      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/loc_city_workshop.png",
+      "seed": 3202,
+      "generation_status": "generated"
     }
   },
   "scenes": [
     {
-      "scene_id": "sc_open",
-      "title": "City on the hill",
+      "scene_id": "sc_promise",
+      "title": "The promise before leaving",
       "order": 0
     },
     {
-      "scene_id": "sc_heart",
-      "title": "Streets and stories",
+      "scene_id": "sc_trying",
+      "title": "Trying many paths",
       "order": 1
     },
     {
-      "scene_id": "sc_close",
-      "title": "Future rooted in past",
+      "scene_id": "sc_unseen",
+      "title": "Tired and unseen",
       "order": 2
+    },
+    {
+      "scene_id": "sc_smile_push",
+      "title": "The smile that keeps him going",
+      "order": 3
+    },
+    {
+      "scene_id": "sc_fulfillment",
+      "title": "Making her proud",
+      "order": 4
     }
   ],
   "shots": [
     {
       "shot_id": "sh_01",
-      "scene_id": "sc_open",
+      "scene_id": "sc_promise",
       "shot_order": 0,
-      "duration_seconds": 10,
-      "narration_text": "Addis Ababa rises between green hills—a capital where many Ethiopian stories meet.",
-      "visual_description": "Wide view from hills at sunrise",
-      "image_prompt": "Addis Ababa Ethiopia city panorama Entoto hills sunrise cinematic documentary 9:16",
-      "video_prompt": "Slow push in over misty hills toward city skyline",
+      "duration_seconds": 8,
+      "reason": "Establishes the bond and the promise right at the start so every later trial connects back to it.",
+      "narration_text": "ብሩክ ወደ ከተማ ከመሄዱ በፊት ከእናቱ ጋር ተቀምጦ ጥሩ ህይወት እንደሚገነባ እና ተስፋ ሳይቆርጥ ሁልጊዜ እንደሚጥር ቃል ገባ።",
+      "visual_description": "Medium shot in the sunlit courtyard of Biruk and his mother sitting side by side on a low step, talking earnestly",
+      "image_prompt": "Medium shot of a young Ethiopian man and his mother sitting side by side on a low courtyard step in golden afternoon light, white netela shawl, warm earnest expression, green hills behind, subject centred",
+      "video_prompt": "Soft afternoon breeze moves her shawl slightly, Biruk nods with quiet conviction",
       "camera_movement": "slow push in",
-      "character_refs": [],
-      "location_refs": [
-        "loc_addis_hills"
+      "character_refs": [
+        "char_biruk_young",
+        "char_mother"
       ],
-      "subtitle_text_en": "Addis Ababa rises between green hills—a capital where many Ethiopian stories meet.",
+      "location_refs": [
+        "loc_family_courtyard"
+      ],
+      "music_cue": "cue_1_theme_soft",
+      "subtitle_text_en": "Before Biruk left for the city, he sat with his mother and promised he would build a good life—and never stop trying.",
       "generation_status": {
-        "keyframe": "reused",
+        "keyframe": "generated",
         "video": "generated",
         "narration": "reused"
       },
+      "seed": 4001,
       "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_01.png",
       "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_01.mp4",
       "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_01.wav"
     },
     {
       "shot_id": "sh_02",
-      "scene_id": "sc_open",
+      "scene_id": "sc_trying",
       "shot_order": 1,
-      "duration_seconds": 10,
-      "narration_text": "Founded as a modern capital in the 1880s, it grew into a diplomatic heart of Africa.",
-      "visual_description": "Historic government area, stylized period feel",
-      "image_prompt": "Addis Ababa historic urban architecture Ethiopian documentary golden hour",
-      "video_prompt": "Gentle pan across stone buildings and palms",
-      "camera_movement": "slow pan right",
-      "character_refs": [],
-      "location_refs": [
-        "loc_addis_hills"
+      "duration_seconds": 8,
+      "reason": "Shows him actively trying different roles and skills rather than waiting around.",
+      "narration_text": "ከተማ ውስጥ ብዙ ነገሮችን ሞከረ፤ የተለያዩ ስራዎችን፣ የጥገና ስራዎችን እና በር ሊከፍቱ የሚችሉ ክህሎቶችን ለመማር ረጅም ሰዓት ደከመ።",
+      "visual_description": "Medium shot of Biruk working intently at a crowded wooden bench with tools and parts under warm overhead light",
+      "image_prompt": "Medium shot of a young Ethiopian man working carefully with small tools at a cluttered wooden workbench in a city workshop, focused hands and determined eyes, subject centred",
+      "video_prompt": "His hands adjust a part steadily, dust motes drift in a beam of light",
+      "camera_movement": "static, locked-off",
+      "character_refs": [
+        "char_biruk_young"
       ],
-      "subtitle_text_en": "Founded as a modern capital in the 1880s, it grew into a diplomatic heart of Africa.",
+      "location_refs": [
+        "loc_city_workshop"
+      ],
+      "music_cue": "cue_2_steady",
+      "subtitle_text_en": "In the city, he tried many things—odd jobs, repair work, long hours learning whatever could open a door.",
       "generation_status": {
-        "keyframe": "reused",
+        "keyframe": "generated",
         "video": "generated",
-        "narration": "reused"
+        "narration": "generated"
       },
+      "seed": 4002,
       "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_02.png",
       "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_02.mp4",
       "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_02.wav"
     },
     {
       "shot_id": "sh_03",
-      "scene_id": "sc_heart",
+      "scene_id": "sc_trying",
       "shot_order": 2,
-      "duration_seconds": 10,
-      "narration_text": "Coffee ceremony here is living heritage—slow, shared, and older than the skyline.",
-      "visual_description": "Coffee ceremony setup, artistic interpretation",
-      "image_prompt": "Ethiopian coffee ceremony jebena incense herbs documentary intimate warm light",
-      "video_prompt": "Slow push in toward steaming jebena and cups",
-      "camera_movement": "slow push in",
+      "duration_seconds": 8,
+      "reason": "Captures pivoting across another effort—pitching or sketching ideas—showing persistence across attempts.",
+      "narration_text": "አንድ እቅድ ሲቆም ሌላውን ይዞ፣ ማስታወሻ ደብተሮቹንና ትንሽ ተስፋውን አንግቦ ከቦታ ወደ ቦታ ይንቀሳቀስ ነበር።",
+      "visual_description": "Medium shot of Biruk walking briskly along a sunlit city sidewalk holding a worn folder and notebook",
+      "image_prompt": "Medium shot of a young Ethiopian man walking forward along a sunlit city street holding a worn notebook and folder, busy buildings and trees softly blurred behind, subject centred",
+      "video_prompt": "He walks forward steadily as dappled sunlight shifts across his shirt",
+      "camera_movement": "slow tracking front",
       "character_refs": [
-        "char_narrator"
+        "char_biruk_young"
       ],
       "location_refs": [],
-      "subtitle_text_en": "Coffee ceremony here is living heritage—slow, shared, and older than the skyline.",
+      "music_cue": "cue_2_steady",
+      "subtitle_text_en": "When one plan stalled, he picked up another, carrying notebooks, samples, and quiet hope from place to place.",
       "generation_status": {
-        "keyframe": "reused",
+        "keyframe": "generated",
         "video": "generated",
-        "narration": "reused"
+        "narration": "generated"
       },
+      "seed": 4003,
       "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_03.png",
       "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_03.mp4",
       "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_03.wav"
     },
     {
       "shot_id": "sh_04",
-      "scene_id": "sc_heart",
+      "scene_id": "sc_unseen",
       "shot_order": 3,
-      "duration_seconds": 10,
-      "narration_text": "In Mercato and side streets, trade and language blend—facts of daily urban life.",
-      "visual_description": "Busy market mood, no identifiable faces",
-      "image_prompt": "Addis Ababa market street life colorful stalls documentary respectful backs of crowd",
-      "video_prompt": "Tracking forward through market aisle, soft motion",
-      "camera_movement": "tracking forward",
-      "character_refs": [],
+      "duration_seconds": 8,
+      "reason": "Shows the feeling of being unseen in a busy environment where nobody notices his effort.",
+      "narration_text": "ሆኖም አንዳንድ ቀናት ከባድና የማይታይ ይመስሉ ነበር። በሚቻኮሉ ሰዎች መሃል ሆኖ ምን ያህል እንደሚጥር ማንም የሚያስተውለው አልነበረም።",
+      "visual_description": "Biruk sitting on a curb or steps in muted twilight while stylized passersby walk past without noticing",
+      "image_prompt": "Medium shot of a tired young Ethiopian man sitting alone on stone steps at dusk as stylized people walk past in muted blue-grey light, no recognizable faces in crowd, subject centred",
+      "video_prompt": "Footsteps blur past while he sits motionless, his breath visible in cool evening air",
+      "camera_movement": "slow push in",
+      "character_refs": [
+        "char_biruk_young"
+      ],
       "location_refs": [],
-      "subtitle_text_en": "In markets and side streets, trade and language blend—facts of daily urban life.",
+      "music_cue": "cue_3_heavy_quiet",
+      "subtitle_text_en": "Yet some days felt heavy and invisible. Surrounded by rushing strangers, nobody seemed to see how hard he tried.",
       "generation_status": {
-        "keyframe": "reused",
+        "keyframe": "generated",
         "video": "generated",
-        "narration": "reused"
+        "narration": "generated"
       },
+      "seed": 4004,
       "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_04.png",
       "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_04.mp4",
       "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_04.wav"
     },
     {
       "shot_id": "sh_05",
-      "scene_id": "sc_heart",
+      "scene_id": "sc_unseen",
       "shot_order": 4,
-      "duration_seconds": 10,
-      "narration_text": "Museums hold deep time—Lucy reminds us humanity's story also passes through Ethiopia.",
-      "visual_description": "Museum interior stylized, Lucy exhibit suggestion",
-      "image_prompt": "Ethiopian national museum interior documentary display ancient hominid exhibit artistic",
-      "video_prompt": "Slow orbit around exhibit case soft light",
-      "camera_movement": "orbit left",
-      "character_refs": [],
-      "location_refs": [],
-      "subtitle_text_en": "Museums hold deep time—Lucy reminds us humanity's story also passes through Ethiopia.",
+      "duration_seconds": 8,
+      "reason": "Depicts exhaustion and the temptation to give up late at night after another setback.",
+      "narration_text": "ሲደክመውና ተስፋ ሲቆርጥ፣ እንደገና ከዜሮ ከመጀመር ይልቅ መተው ቀላል የሚመስልባቸው ጊዜያት ነበሩ።",
+      "visual_description": "Close-up of Biruk leaning his forehead gently on his folded arms over a desk in a dim room at night",
+      "image_prompt": "Close-up of a weary young Ethiopian man resting his head on folded arms at a wooden desk in a dim room at night, closed notebook beside him, soft lamp light, subject centred",
+      "video_prompt": "Lamp light flickers softly, his shoulders rise and fall with a long tired sigh",
+      "camera_movement": "static, locked-off",
+      "character_refs": [
+        "char_biruk_young"
+      ],
+      "location_refs": [
+        "loc_city_workshop"
+      ],
+      "music_cue": "cue_3_heavy_quiet",
+      "subtitle_text_en": "Exhausted and discouraged, there were moments when giving up felt easier than starting over one more time.",
       "generation_status": {
-        "keyframe": "reused",
+        "keyframe": "generated",
         "video": "generated",
-        "narration": "reused"
+        "narration": "generated"
       },
+      "seed": 4005,
       "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_05.png",
       "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_05.mp4",
       "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_05.wav"
     },
     {
       "shot_id": "sh_06",
-      "scene_id": "sc_heart",
+      "scene_id": "sc_smile_push",
       "shot_order": 5,
-      "duration_seconds": 10,
-      "narration_text": "Parks and plazas show a city reinventing public space—some scenes are interpretive, not archival.",
-      "visual_description": "Urban park greenery and plaza",
-      "image_prompt": "Addis Ababa urban park greenery families distant documentary afternoon",
-      "video_prompt": "Crane up from trees to city backdrop",
-      "camera_movement": "crane up",
-      "character_refs": [],
-      "location_refs": [
-        "loc_addis_hills"
+      "duration_seconds": 8,
+      "reason": "The emotional shift: recalling his mother and his promise brings a simple, grounding smile.",
+      "narration_text": "ከዚያ የእናቱን ድምጽና የሰጣትን ቃል ሲያስታውስ፣ ቀላልና ጸጥ ያለ ፈገግታ በፊቱ ላይ ፈነጠቀ።",
+      "visual_description": "Close-up of Biruk lifting his head slightly in warm morning light, a gentle, simple smile forming on his face",
+      "image_prompt": "Close-up of a young Ethiopian man lifting his head in warm morning window light, a quiet simple smile on his face as a warm memory grounds him, subject centred",
+      "video_prompt": "Warm morning light touches his face, his expression softens into a calm, genuine smile",
+      "camera_movement": "slow push in",
+      "character_refs": [
+        "char_biruk_young"
       ],
-      "subtitle_text_en": "Parks and plazas show a city reinventing public space—some scenes are interpretive.",
+      "location_refs": [
+        "loc_city_workshop"
+      ],
+      "music_cue": "cue_4_gentle_lift",
+      "subtitle_text_en": "Then he remembered his mother’s voice and the promise he gave her—and a simple smile crossed his face.",
       "generation_status": {
-        "keyframe": "reused",
+        "keyframe": "generated",
         "video": "generated",
-        "narration": "reused"
+        "narration": "generated"
       },
+      "seed": 4006,
       "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_06.png",
       "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_06.mp4",
       "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_06.wav"
     },
     {
       "shot_id": "sh_07",
-      "scene_id": "sc_close",
+      "scene_id": "sc_smile_push",
       "shot_order": 6,
-      "duration_seconds": 10,
-      "narration_text": "For me, this city is memory and motion—heritage is not only monuments but how people live.",
-      "visual_description": "Narrator silhouette at dusk, personal beat",
-      "image_prompt": "Heritage storyteller silhouette Addis Ababa sunset hills documentary emotional",
-      "video_prompt": "Slow push in on silhouette against orange sky",
+      "duration_seconds": 8,
+      "reason": "Shows him choosing to push ahead anyway—not loud drama, just steady resolve.",
+      "narration_text": "ለመቀጠል የሰዎች ጭብጨባ አላስፈለገውም፤ ለምን እንደጀመረ ማስታወሱ ብቻ ወደፊት ለመግፋት ብርታት ሆነው።",
+      "visual_description": "Medium shot of Biruk opening his notebook, picking up his pen or tool, and getting back to work with calm focus",
+      "image_prompt": "Medium shot of a young Ethiopian man sitting upright at his workbench in warm light, opening his notebook and taking up his pen with calm determination, subject centred",
+      "video_prompt": "He begins writing steadily with unhurried focus as warm light fills the room",
       "camera_movement": "slow push in",
       "character_refs": [
-        "char_narrator"
+        "char_biruk_young"
       ],
       "location_refs": [
-        "loc_addis_hills"
+        "loc_city_workshop"
       ],
-      "subtitle_text_en": "This city is memory and motion—heritage is not only monuments but how people live.",
+      "music_cue": "cue_4_gentle_lift",
+      "subtitle_text_en": "He did not need applause to keep going. Remembering why he began gave him strength to push on anyway.",
       "generation_status": {
-        "keyframe": "reused",
+        "keyframe": "generated",
         "video": "generated",
-        "narration": "reused"
+        "narration": "generated"
       },
+      "seed": 4007,
       "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_07.png",
       "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_07.mp4",
       "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_07.wav"
     },
     {
       "shot_id": "sh_08",
-      "scene_id": "sc_close",
+      "scene_id": "sc_fulfillment",
       "shot_order": 7,
-      "duration_seconds": 10,
-      "narration_text": "Addis Ababa keeps writing its chapter—listen to the hills, the coffee, and the crowd.",
-      "visual_description": "Night city lights from hills",
-      "image_prompt": "Addis Ababa night city lights from hills long exposure style documentary",
-      "video_prompt": "Slow pan across city lights",
-      "camera_movement": "slow pan left",
-      "character_refs": [],
-      "location_refs": [
-        "loc_addis_hills"
+      "duration_seconds": 8,
+      "reason": "Shows the return and the first glimpse of his mother's quiet satisfaction and pride.",
+      "narration_text": "የሰራውን ለማካፈል ወደ ቤት ሲመለስ፣ በእናቱ ዓይኖች ውስጥ የኩራት ብርሃን ሲያንጸባርቅ አየ።",
+      "visual_description": "Medium close-up of his mother in the courtyard listening to him, her eyes bright with proud warmth and a gentle smile",
+      "image_prompt": "Medium close-up of an Ethiopian mother in a white netela shawl in warm golden light, looking at her son with deep pride and a gentle loving smile, subject centred",
+      "video_prompt": "Her eyes glisten warmly and she nods slowly with quiet satisfaction",
+      "camera_movement": "static, locked-off",
+      "character_refs": [
+        "char_mother"
       ],
-      "subtitle_text_en": "Addis Ababa keeps writing its chapter—listen to the hills, the coffee, and the crowd.",
+      "location_refs": [
+        "loc_family_courtyard"
+      ],
+      "music_cue": "cue_5_warm_resolve",
+      "subtitle_text_en": "When he came home to share what he had built, he saw quiet pride shining in his mother’s eyes.",
       "generation_status": {
-        "keyframe": "reused",
+        "keyframe": "generated",
         "video": "generated",
-        "narration": "reused"
+        "narration": "generated"
       },
+      "seed": 4008,
       "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_08.png",
       "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_08.mp4",
       "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_08.wav"
+    },
+    {
+      "shot_id": "sh_09",
+      "scene_id": "sc_fulfillment",
+      "shot_order": 8,
+      "duration_seconds": 10,
+      "reason": "Delivers the feeling of satisfying his mother—peace, gratitude, and shared joy held slightly longer before the end card.",
+      "narration_text": "እናቱን ደስተኛና ኩሩ ሆና ማየቱ እያንዳንዱን አስቸጋሪ ቀን ዋጋ ያለው አደረገው፤ ለእናቱ የገባውን ቃል ጠብቋል።",
+      "visual_description": "Close two-shot of Biruk beside his mother in the courtyard at golden hour, both smiling peacefully as she rests a hand warmly on his arm",
+      "image_prompt": "Close two-shot of a young Ethiopian man and his mother sitting together in golden evening light, his mother resting a warm hand on his arm while both share a peaceful proud smile, subject centred",
+      "video_prompt": "Golden light warms the courtyard gently, both share a calm, contented smile",
+      "camera_movement": "slow push in",
+      "character_refs": [
+        "char_biruk_young",
+        "char_mother"
+      ],
+      "location_refs": [
+        "loc_family_courtyard"
+      ],
+      "music_cue": "cue_5_warm_resolve",
+      "subtitle_text_en": "Seeing his mother content and proud made every hard day worth it—he had kept his word to her heart.",
+      "generation_status": {
+        "keyframe": "generated",
+        "video": "generated",
+        "narration": "generated"
+      },
+      "seed": 4009,
+      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_09.png",
+      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_09.mp4",
+      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_09.wav"
+    }
+  ],
+  "closing_line": {
+    "text": "A simple smile from the ones who believe in us can carry us through the hardest miles.",
+    "text_am": "የሚያምኑን ሰዎች ቀላል ፈገግታ በጣም አስቸጋሪ የሆኑትን ጉዞዎች እንድናልፍ ይረዳናል።",
+    "note": "Shown as a title over the final shot or the end card, added in code (not generated in the image). Remove or shorten if the narration for shot 09 runs long.",
+    "display_seconds": 4
+  },
+  "music_cues": [
+    {
+      "cue_id": "cue_1_theme_soft",
+      "shots": [
+        "sh_01"
+      ],
+      "intent": "Warm, tender krar motif introducing the promise at home"
+    },
+    {
+      "cue_id": "cue_2_steady",
+      "shots": [
+        "sh_02",
+        "sh_03"
+      ],
+      "intent": "Gentle forward rhythm supporting his many attempts"
+    },
+    {
+      "cue_id": "cue_3_heavy_quiet",
+      "shots": [
+        "sh_04",
+        "sh_05"
+      ],
+      "intent": "Sparse, muted low notes reflecting invisibility and fatigue"
+    },
+    {
+      "cue_id": "cue_4_gentle_lift",
+      "shots": [
+        "sh_06",
+        "sh_07"
+      ],
+      "intent": "Soft return of warm melody as a simple smile restores his drive"
+    },
+    {
+      "cue_id": "cue_5_warm_resolve",
+      "shots": [
+        "sh_08",
+        "sh_09"
+      ],
+      "intent": "Full tender theme resolving warmly as his mother feels pride and peace"
     }
   ],
   "audio": {
+    "tts_model": "gemini-tts",
+    "tts_voice": "TBD after listening to 3 candidates",
+    "tts_style": "Calm, warm, unhurried storyteller",
     "music_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/music/background.wav",
     "full_narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/full.wav",
-    "subtitles_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/subtitles/en.srt"
+    "subtitles_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/subtitles/en.srt",
+    "mix": {
+      "ducking": {
+        "threshold": 0.02,
+        "ratio": 6,
+        "attack_ms": 300,
+        "release_ms": 1500
+      },
+      "target_lufs": -14,
+      "true_peak_db": -1
+    }
   },
   "final": {
     "vertical_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/final/heritage_vertical.mp4",
     "horizontal_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/final/heritage_horizontal.mp4",
-    "end_card_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/end_card/end_card.png"
+    "end_card_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/end_card/end_card.png",
+    "end_card_text": "Made with AI",
+    "end_card_seconds": 3
   }
 }
