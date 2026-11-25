@@ -96,6 +96,11 @@ def main() -> int:
         print(f"  Vertical (9:16): {cfg.final_vertical_path()}")
         print(f"  Horizontal:      {cfg.final_horizontal_path()}")
         print("Logs: logs/runs.jsonl  |  Progress: python3 main.py status")
+    elif pipeline.last_error:
+        print(f"\nFailed at stage '{pipeline.last_error_stage}'")
+        print(f"  Reason: {pipeline.last_error}")
+        if pipeline.last_error_detail:
+            print(f"  Detail: {pipeline.last_error_detail}")
     return 0 if ok else 1
 
 

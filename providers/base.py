@@ -13,6 +13,7 @@ class ProviderResult:
     success: bool
     path: Path | None = None
     message: str = ""
+    detail: str = ""
     metadata: dict[str, Any] | None = None
 
 

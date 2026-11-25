@@ -1,54 +1,54 @@
 {
   "project": {
-    "topic": "Lalibela rock-hewn churches",
-    "location": "Lalibela, Amhara Region, Ethiopia",
-    "target_audience": "Young adults interested in African heritage",
+    "topic": "Addis Ababa — hills, history, and daily heritage",
+    "location": "Addis Ababa, Ethiopia",
+    "target_audience": "Young adults curious about urban African heritage",
     "film_language": "en",
     "narration_language": "en",
-    "visual_style": "Cinematic documentary, warm earth tones, golden hour light",
-    "target_duration_seconds": 75,
+    "visual_style": "Cinematic documentary, golden hour, bustling city and green hills, respectful tone",
+    "target_duration_seconds": 80,
     "aspect_ratios": [
       "9:16",
       "16:9"
     ],
-    "creative_direction": "Respectful, educational tone; distinguish UNESCO-documented facts from artistic reconstruction.",
-    "music_prompt": "Ambient Ethiopian-inspired strings and krar, meditative, 75 seconds, no vocals"
+    "creative_direction": "Separate documented history from artistic reconstruction; no real people's likeness without consent.",
+    "music_prompt": "Instrumental Ethiopian jazz and krar undertones, urban and warm, meditative, 80 seconds, no vocals"
   },
   "metadata": {
     "version": 1,
-    "historical_notes": "Lalibela churches are attributed to King Lalibela (13th century); UNESCO World Heritage since 1978.",
-    "creative_notes": "Interior lighting and crowd scenes are interpretive reconstructions."
+    "historical_notes": "Addis Ababa founded as capital in late 19th century; seat of AU; diverse communities and languages.",
+    "creative_notes": "Crowd scenes and some interiors are stylized reconstructions, not news footage."
   },
   "references": {
-    "loc_lalibela": {
-      "id": "loc_lalibela",
+    "loc_addis_hills": {
+      "id": "loc_addis_hills",
       "type": "location",
-      "description": "Exterior of Bet Giyorgis church, distinctive cross-shaped monolithic structure",
-      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/loc_lalibela.png",
+      "description": "Panoramic view of Addis Ababa from Entoto hills, city spread in valley, documentary wide shot",
+      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/loc_addis_hills.png",
       "generation_status": "reused"
     },
-    "char_guide": {
-      "id": "char_guide",
+    "char_narrator": {
+      "id": "char_narrator",
       "type": "character",
-      "description": "Local heritage guide in modest traditional dress, neutral expression",
-      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/char_guide.png",
+      "description": "Young Ethiopian heritage storyteller, modest modern dress, warm expression, not a celebrity likeness",
+      "image_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/references/char_narrator.png",
       "generation_status": "reused"
     }
   },
   "scenes": [
     {
       "scene_id": "sc_open",
-      "title": "Opening",
+      "title": "City on the hill",
       "order": 0
     },
     {
       "scene_id": "sc_heart",
-      "title": "Heart of Lalibela",
+      "title": "Streets and stories",
       "order": 1
     },
     {
       "scene_id": "sc_close",
-      "title": "Closing reflection",
+      "title": "Future rooted in past",
       "order": 2
     }
   ],
@@ -57,125 +57,191 @@
       "shot_id": "sh_01",
       "scene_id": "sc_open",
       "shot_order": 0,
-      "duration_seconds": 12,
-      "narration_text": "High in the Ethiopian highlands, eleven medieval churches were carved from living rock.",
-      "visual_description": "Wide aerial-style view of Lalibela landscape at sunrise",
-      "image_prompt": "Lalibela Ethiopia rock churches sunrise aerial cinematic documentary",
-      "video_prompt": "Slow push in over misty highlands toward ancient stone churches",
+      "duration_seconds": 10,
+      "narration_text": "Addis Ababa rises between green hills—a capital where many Ethiopian stories meet.",
+      "visual_description": "Wide view from hills at sunrise",
+      "image_prompt": "Addis Ababa Ethiopia city panorama Entoto hills sunrise cinematic documentary 9:16",
+      "video_prompt": "Slow push in over misty hills toward city skyline",
       "camera_movement": "slow push in",
       "character_refs": [],
       "location_refs": [
-        "loc_lalibela"
+        "loc_addis_hills"
       ],
-      "subtitle_text_en": "High in the Ethiopian highlands, eleven medieval churches were carved from living rock.",
-      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_01.png",
-      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_01.mp4",
-      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_01.wav",
+      "subtitle_text_en": "Addis Ababa rises between green hills—a capital where many Ethiopian stories meet.",
       "generation_status": {
         "keyframe": "reused",
         "video": "generated",
-        "narration": "generated"
-      }
+        "narration": "reused"
+      },
+      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_01.png",
+      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_01.mp4",
+      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_01.wav"
     },
     {
       "shot_id": "sh_02",
-      "scene_id": "sc_heart",
+      "scene_id": "sc_open",
       "shot_order": 1,
-      "duration_seconds": 18,
-      "narration_text": "King Lalibela's vision turned stone into sanctuary—facts we know from UNESCO records, not legend alone.",
-      "visual_description": "Bet Giyorgis exterior with guide gesturing toward facade",
-      "image_prompt": "Bet Giyorgis Lalibela cross-shaped church heritage guide documentary",
-      "video_prompt": "Gentle orbit around church facade, dust motes in sun",
-      "camera_movement": "orbit left",
-      "character_refs": [
-        "char_guide"
-      ],
+      "duration_seconds": 10,
+      "narration_text": "Founded as a modern capital in the 1880s, it grew into a diplomatic heart of Africa.",
+      "visual_description": "Historic government area, stylized period feel",
+      "image_prompt": "Addis Ababa historic urban architecture Ethiopian documentary golden hour",
+      "video_prompt": "Gentle pan across stone buildings and palms",
+      "camera_movement": "slow pan right",
+      "character_refs": [],
       "location_refs": [
-        "loc_lalibela"
+        "loc_addis_hills"
       ],
-      "subtitle_text_en": "King Lalibela's vision turned stone into sanctuary—facts we know from UNESCO records.",
-      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_02.png",
-      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_02.mp4",
-      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_02.wav",
+      "subtitle_text_en": "Founded as a modern capital in the 1880s, it grew into a diplomatic heart of Africa.",
       "generation_status": {
         "keyframe": "reused",
         "video": "generated",
-        "narration": "generated"
-      }
+        "narration": "reused"
+      },
+      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_02.png",
+      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_02.mp4",
+      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_02.wav"
     },
     {
       "shot_id": "sh_03",
       "scene_id": "sc_heart",
       "shot_order": 2,
-      "duration_seconds": 20,
-      "narration_text": "Inside, pilgrims still walk tunnels and arches—a living heritage site, not a museum frozen in time.",
-      "visual_description": "Stylized interior corridor with candlelight (creative interpretation)",
-      "image_prompt": "Rock-hewn church interior Ethiopia candlelight pilgrims silhouette artistic",
-      "video_prompt": "Tracking shot through carved corridor toward light",
-      "camera_movement": "tracking forward",
-      "character_refs": [],
-      "location_refs": [
-        "loc_lalibela"
+      "duration_seconds": 10,
+      "narration_text": "Coffee ceremony here is living heritage—slow, shared, and older than the skyline.",
+      "visual_description": "Coffee ceremony setup, artistic interpretation",
+      "image_prompt": "Ethiopian coffee ceremony jebena incense herbs documentary intimate warm light",
+      "video_prompt": "Slow push in toward steaming jebena and cups",
+      "camera_movement": "slow push in",
+      "character_refs": [
+        "char_narrator"
       ],
-      "subtitle_text_en": "Inside, pilgrims still walk tunnels and arches—a living heritage site.",
-      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_03.png",
-      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_03.mp4",
-      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_03.wav",
+      "location_refs": [],
+      "subtitle_text_en": "Coffee ceremony here is living heritage—slow, shared, and older than the skyline.",
       "generation_status": {
         "keyframe": "reused",
         "video": "generated",
-        "narration": "generated"
-      }
+        "narration": "reused"
+      },
+      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_03.png",
+      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_03.mp4",
+      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_03.wav"
     },
     {
       "shot_id": "sh_04",
-      "scene_id": "sc_close",
+      "scene_id": "sc_heart",
       "shot_order": 3,
-      "duration_seconds": 15,
-      "narration_text": "These stones remind us: heritage endures when communities protect and share their stories.",
-      "visual_description": "Silhouette of guide against sunset over Lalibela",
-      "image_prompt": "Heritage guide silhouette Lalibela sunset emotional documentary",
-      "video_prompt": "Slow crane up from guide to wide sunset vista",
-      "camera_movement": "crane up",
-      "character_refs": [
-        "char_guide"
-      ],
-      "location_refs": [
-        "loc_lalibela"
-      ],
-      "subtitle_text_en": "Heritage endures when communities protect and share their stories.",
-      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_04.png",
-      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_04.mp4",
-      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_04.wav",
+      "duration_seconds": 10,
+      "narration_text": "In Mercato and side streets, trade and language blend—facts of daily urban life.",
+      "visual_description": "Busy market mood, no identifiable faces",
+      "image_prompt": "Addis Ababa market street life colorful stalls documentary respectful backs of crowd",
+      "video_prompt": "Tracking forward through market aisle, soft motion",
+      "camera_movement": "tracking forward",
+      "character_refs": [],
+      "location_refs": [],
+      "subtitle_text_en": "In markets and side streets, trade and language blend—facts of daily urban life.",
       "generation_status": {
         "keyframe": "reused",
         "video": "generated",
-        "narration": "generated"
-      }
+        "narration": "reused"
+      },
+      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_04.png",
+      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_04.mp4",
+      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_04.wav"
     },
     {
       "shot_id": "sh_05",
-      "scene_id": "sc_close",
+      "scene_id": "sc_heart",
       "shot_order": 4,
       "duration_seconds": 10,
-      "narration_text": "Lalibela invites us to listen—to rock, to faith, to history still being written.",
-      "visual_description": "Close detail of carved stone cross",
-      "image_prompt": "Carved stone cross detail Lalibela macro warm light",
-      "video_prompt": "Macro slow pan across stone cross texture",
-      "camera_movement": "macro pan",
+      "narration_text": "Museums hold deep time—Lucy reminds us humanity's story also passes through Ethiopia.",
+      "visual_description": "Museum interior stylized, Lucy exhibit suggestion",
+      "image_prompt": "Ethiopian national museum interior documentary display ancient hominid exhibit artistic",
+      "video_prompt": "Slow orbit around exhibit case soft light",
+      "camera_movement": "orbit left",
       "character_refs": [],
-      "location_refs": [
-        "loc_lalibela"
-      ],
-      "subtitle_text_en": "Lalibela invites us to listen—to rock, to faith, to history still being written.",
-      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_05.png",
-      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_05.mp4",
-      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_05.wav",
+      "location_refs": [],
+      "subtitle_text_en": "Museums hold deep time—Lucy reminds us humanity's story also passes through Ethiopia.",
       "generation_status": {
         "keyframe": "reused",
         "video": "generated",
-        "narration": "generated"
-      }
+        "narration": "reused"
+      },
+      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_05.png",
+      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_05.mp4",
+      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_05.wav"
+    },
+    {
+      "shot_id": "sh_06",
+      "scene_id": "sc_heart",
+      "shot_order": 5,
+      "duration_seconds": 10,
+      "narration_text": "Parks and plazas show a city reinventing public space—some scenes are interpretive, not archival.",
+      "visual_description": "Urban park greenery and plaza",
+      "image_prompt": "Addis Ababa urban park greenery families distant documentary afternoon",
+      "video_prompt": "Crane up from trees to city backdrop",
+      "camera_movement": "crane up",
+      "character_refs": [],
+      "location_refs": [
+        "loc_addis_hills"
+      ],
+      "subtitle_text_en": "Parks and plazas show a city reinventing public space—some scenes are interpretive.",
+      "generation_status": {
+        "keyframe": "reused",
+        "video": "generated",
+        "narration": "reused"
+      },
+      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_06.png",
+      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_06.mp4",
+      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_06.wav"
+    },
+    {
+      "shot_id": "sh_07",
+      "scene_id": "sc_close",
+      "shot_order": 6,
+      "duration_seconds": 10,
+      "narration_text": "For me, this city is memory and motion—heritage is not only monuments but how people live.",
+      "visual_description": "Narrator silhouette at dusk, personal beat",
+      "image_prompt": "Heritage storyteller silhouette Addis Ababa sunset hills documentary emotional",
+      "video_prompt": "Slow push in on silhouette against orange sky",
+      "camera_movement": "slow push in",
+      "character_refs": [
+        "char_narrator"
+      ],
+      "location_refs": [
+        "loc_addis_hills"
+      ],
+      "subtitle_text_en": "This city is memory and motion—heritage is not only monuments but how people live.",
+      "generation_status": {
+        "keyframe": "reused",
+        "video": "generated",
+        "narration": "reused"
+      },
+      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_07.png",
+      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_07.mp4",
+      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_07.wav"
+    },
+    {
+      "shot_id": "sh_08",
+      "scene_id": "sc_close",
+      "shot_order": 7,
+      "duration_seconds": 10,
+      "narration_text": "Addis Ababa keeps writing its chapter—listen to the hills, the coffee, and the crowd.",
+      "visual_description": "Night city lights from hills",
+      "image_prompt": "Addis Ababa night city lights from hills long exposure style documentary",
+      "video_prompt": "Slow pan across city lights",
+      "camera_movement": "slow pan left",
+      "character_refs": [],
+      "location_refs": [
+        "loc_addis_hills"
+      ],
+      "subtitle_text_en": "Addis Ababa keeps writing its chapter—listen to the hills, the coffee, and the crowd.",
+      "generation_status": {
+        "keyframe": "reused",
+        "video": "generated",
+        "narration": "reused"
+      },
+      "keyframe_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/keyframes/sh_08.png",
+      "clip_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/clips/sh_08.mp4",
+      "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_08.wav"
     }
   ],
   "audio": {

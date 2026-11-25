@@ -63,9 +63,10 @@ def run_keyframes(
         fp = fingerprint(shot_keyframe_inputs(shot, ref_paths))
         key = f"keyframe:{sid}"
         cached = cache.lookup(key, fp)
+        status = shot.setdefault("generation_status", {})
         if cached:
             shot["keyframe_path"] = cached["path"]
-            shot["generation_status"]["keyframe"] = "reused"
+            status["keyframe"] = "reused"
             log.info("images", f"Reused keyframe {sid}")
             continue
         result = registry.image.generate_image(
@@ -74,7 +75,7 @@ def run_keyframes(
         if not result.success:
             raise RuntimeError(f"Keyframe {sid} failed: {result.message}")
         shot["keyframe_path"] = str(out)
-        shot["generation_status"]["keyframe"] = "generated"
+        status["keyframe"] = "generated"
         cache.store(key, fp, out, reason="new keyframe", stage="images")
         log.info("images", f"Generated keyframe {sid}", path=str(out))
     return storyboard

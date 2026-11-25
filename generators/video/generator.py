@@ -28,9 +28,10 @@ def run_videos(
         fp = fingerprint(shot_video_inputs(shot, kf))
         key = f"clip:{sid}"
         cached = cache.lookup(key, fp)
+        status = shot.setdefault("generation_status", {})
         if cached:
             shot["clip_path"] = cached["path"]
-            shot["generation_status"]["video"] = "reused"
+            status["video"] = "reused"
             log.info("videos", f"Reused clip {sid}")
             continue
         result = registry.video.generate_clip(
@@ -44,7 +45,7 @@ def run_videos(
         if not result.success:
             raise RuntimeError(f"Video {sid} failed: {result.message}")
         shot["clip_path"] = str(out)
-        shot["generation_status"]["video"] = "generated"
+        status["video"] = "generated"
         cache.store(key, fp, out, reason="new clip", stage="videos")
         log.info("videos", f"Generated clip {sid}", path=str(out))
     return storyboard

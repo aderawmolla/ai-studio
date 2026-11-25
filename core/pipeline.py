@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
-from typing import Callable
 
 from config import AppConfig, load_config
+from core.api_errors import parse_api_error, technical_detail
+from core.errors import StageAbort
+from core.failure_report import print_failure_summary
 from core.cache import ArtifactCache
 from core.logger import RunLogger
 from core.registry import ProviderRegistry, build_registry
@@ -53,6 +55,9 @@ class Pipeline:
     log: RunLogger
     cache: ArtifactCache
     registry: ProviderRegistry
+    last_error: str | None = field(default=None, init=False)
+    last_error_detail: str | None = field(default=None, init=False)
+    last_error_stage: str | None = field(default=None, init=False)
 
     @classmethod
     def create(cls) -> Pipeline:
@@ -69,6 +74,20 @@ class Pipeline:
 
     def _save(self, data) -> None:
         save_storyboard(self.config.storyboard_path, data)
+
+    def _record_failure(self, stage: str, message: str, detail: str | None = None) -> None:
+        self.last_error = message
+        self.last_error_detail = detail
+        self.last_error_stage = stage
+        self.log.error(
+            stage,
+            message,
+            reason=message,
+            detail=detail or message,
+        )
+
+    def _resume_hint(self, stage: PipelineStage) -> str:
+        return f"python3 run_film.py --resume {stage.value}"
 
     def run_stage(self, stage: PipelineStage) -> bool:
         try:
@@ -121,18 +140,33 @@ class Pipeline:
 
             self._save(data)
             return True
+        except StageAbort as exc:
+            self._record_failure(stage.value, exc.reason, detail=exc.detail)
+            return False
         except Exception as exc:
-            self.log.error(stage.value, str(exc))
+            reason, detail = parse_api_error(exc)
+            self._record_failure(stage.value, reason, detail=detail or technical_detail(exc))
             return False
 
     def run_all(self, from_stage: PipelineStage | None = None) -> bool:
+        self.last_error = None
+        self.last_error_detail = None
+        self.last_error_stage = None
         start_idx = 0
         if from_stage:
             start_idx = STAGE_ORDER.index(from_stage)
         for stage in STAGE_ORDER[start_idx:]:
             self.log.info("pipeline", f"Running stage {stage.value}")
             if not self.run_stage(stage):
-                self.log.error("pipeline", f"Stage failed: {stage.value}")
+                summary = self.last_error or f"Stage {stage.value} failed (see logs)"
+                self.log.error("pipeline", f"Stage failed: {stage.value} — {summary}")
+                print_failure_summary(
+                    stage.value,
+                    summary,
+                    detail=self.last_error_detail,
+                    logs_path=self.log.jsonl_path,
+                    resume_hint=self._resume_hint(stage),
+                )
                 return False
         return True
 

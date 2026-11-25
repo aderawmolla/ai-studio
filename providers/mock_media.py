@@ -71,33 +71,78 @@ def _ken_burns_filter(
     camera_movement: str,
     duration: float,
 ) -> str:
-    """Build FFmpeg zoompan filter from storyboard camera_movement."""
+    """Build FFmpeg zoompan filter from storyboard camera_movement.
+
+    Uses d=1 so each looped still frame becomes one output frame with smooth
+  motion. d=total_frames resets when -loop 1 feeds another input frame (stutter).
+    """
     w, h, fps = config.vertical_width, config.vertical_height, config.fps
     frames = max(int(duration * fps), 1)
-    cam = (camera_movement or "").lower()
+    cam = (camera_movement or "").lower().strip()
+    step = lambda cap, start=1.0: min((cap - start) / frames, 0.002)
+
+    if cam in ("static", "hold", "locked", "none"):
+        return (
+            f"scale={w}:{h}:force_original_aspect_ratio=decrease,"
+            f"pad={w}:{h}:(ow-iw)/2:(oh-ih)/2,setsar=1"
+        )
 
     if any(k in cam for k in ("push", "dolly", "zoom in", "crane up")):
-        z = "min(zoom+0.0012,1.25)"
+        inc = step(1.25)
+        z = f"min(max(zoom,pzoom)+{inc:.6f},1.25)"
         x = "iw/2-(iw/zoom/2)"
         y = "ih/2-(ih/zoom/2)"
     elif "orbit" in cam or "pan" in cam or "track" in cam:
         z = "1.08"
-        x = "iw/2-(iw/zoom/2)+(on*2)"
+        x = "iw/2-(iw/zoom/2)+(on*0.8)"
         y = "ih/2-(ih/zoom/2)"
     elif "crane" in cam or "tilt" in cam:
         z = "1.08"
         x = "iw/2-(iw/zoom/2)"
-        y = "ih/2-(ih/zoom/2)-(on*1.2)"
+        y = "ih/2-(ih/zoom/2)-(on*0.5)"
     else:
-        z = "min(zoom+0.0008,1.18)"
+        inc = step(1.18)
+        z = f"min(max(zoom,pzoom)+{inc:.6f},1.18)"
         x = "iw/2-(iw/zoom/2)"
         y = "ih/2-(ih/zoom/2)"
 
     return (
-        f"scale={w}:{h}:force_original_aspect_ratio=decrease,"
-        f"pad={w}:{h}:(ow-iw)/2:(oh-ih)/2,"
-        f"zoompan=z='{z}':x='{x}':y='{y}':d={frames}:s={w}x{h}:fps={fps}"
+        f"scale={w*2}:{h*2}:force_original_aspect_ratio=decrease,"
+        f"pad={w*2}:{h*2}:(ow-iw)/2:(oh-ih)/2,"
+        f"zoompan=z='{z}':x='{x}':y='{y}':d=1:s={w}x{h}:fps={fps}"
     )
+
+
+def _still_to_video_cmd(
+    config: AppConfig,
+    image_path: Path,
+    output_path: Path,
+    duration: float,
+    vf: str,
+) -> list[str]:
+    ffmpeg = ensure_ffmpeg(config)
+    fps = config.fps
+    return [
+        ffmpeg,
+        "-y",
+        "-loop",
+        "1",
+        "-framerate",
+        str(fps),
+        "-i",
+        str(image_path),
+        "-t",
+        str(duration),
+        "-vf",
+        vf,
+        "-r",
+        str(fps),
+        "-c:v",
+        "libx264",
+        "-pix_fmt",
+        "yuv420p",
+        str(output_path),
+    ]
 
 
 def make_ken_burns_video(
@@ -108,26 +153,22 @@ def make_ken_burns_video(
     camera_movement: str = "slow push in",
 ) -> None:
     """Visible motion on FLUX stills (assignment-accepted until Wan clips are wired)."""
-    ffmpeg = ensure_ffmpeg(config)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     vf = _ken_burns_filter(config, camera_movement, duration)
-    cmd = [
-        ffmpeg,
-        "-y",
-        "-loop",
-        "1",
-        "-i",
-        str(image_path),
-        "-t",
-        str(duration),
-        "-vf",
-        vf,
-        "-c:v",
-        "libx264",
-        "-pix_fmt",
-        "yuv420p",
-        str(output_path),
-    ]
+    cmd = _still_to_video_cmd(config, image_path, output_path, duration, vf)
+    subprocess.run(cmd, check=True, capture_output=True)
+
+
+def make_static_video_from_image(
+    config: AppConfig,
+    image_path: Path,
+    output_path: Path,
+    duration: float,
+) -> None:
+    """Hold a single frame (end card, title) with no Ken Burns motion."""
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    vf = _ken_burns_filter(config, "static", duration)
+    cmd = _still_to_video_cmd(config, image_path, output_path, duration, vf)
     subprocess.run(cmd, check=True, capture_output=True)
 
 

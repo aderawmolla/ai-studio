@@ -79,9 +79,19 @@ def main(argv: list[str] | None = None) -> int:
         from_stage = getattr(args, "from_stage", None)
         from_stage = stage_from_cli(from_stage) if from_stage else None
         ok = pipeline.run_all(from_stage=from_stage)
+        if not ok and pipeline.last_error:
+            print(f"\nFailed at stage '{pipeline.last_error_stage}'")
+            print(f"  Reason: {pipeline.last_error}")
+            if pipeline.last_error_detail:
+                print(f"  Detail: {pipeline.last_error_detail}")
         return 0 if ok else 1
 
     ok = pipeline.run_stage(stage_from_cli(args.command))
+    if not ok and pipeline.last_error:
+        print(f"\nFailed at stage '{pipeline.last_error_stage}'")
+        print(f"  Reason: {pipeline.last_error}")
+        if pipeline.last_error_detail:
+            print(f"  Detail: {pipeline.last_error_detail}")
     return 0 if ok else 1
 
 

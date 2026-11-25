@@ -9,6 +9,7 @@ import wave
 from pathlib import Path
 
 from config import AppConfig
+from core.api_errors import parse_api_error, technical_detail
 from core.model_log import log_model_call
 from providers.base import ProviderResult, TextToSpeechProvider
 
@@ -45,9 +46,21 @@ class GeminiTTSProvider(TextToSpeechProvider):
                 message="Install google-genai>=2.25.0: pip install -U google-genai",
             )
 
+        from google.genai.types import HttpOptions, HttpRetryOptions
+
+        attempts = max(1, min(self.config.api_retry_max, 2))
         client = genai.Client(
             api_key=self.config.gemini_api_key,
-            http_options={"api_version": "v1beta"},
+            http_options=HttpOptions(
+                api_version="v1beta",
+                timeout=int(self.config.api_timeout_seconds * 1000),
+                retry_options=HttpRetryOptions(
+                    attempts=attempts,
+                    initial_delay=1.0,
+                    max_delay=5.0,
+                    http_status_codes=[408, 429, 500, 502, 503, 504],
+                ),
+            ),
         )
         style = f"Calm, clear documentary narration in language {language}."
 
@@ -74,6 +87,8 @@ class GeminiTTSProvider(TextToSpeechProvider):
                 },
             )
         except Exception as exc:
+            reason, _ = parse_api_error(exc)
+            detail = technical_detail(exc)
             log_model_call(
                 self.config.logs_dir,
                 stage="narration",
@@ -81,11 +96,13 @@ class GeminiTTSProvider(TextToSpeechProvider):
                 latency_ms=(time.perf_counter() - t0) * 1000,
                 success=False,
                 parameters={"language": language, "text_len": len(text)},
-                message=str(exc),
+                message=reason,
             )
             return ProviderResult(
                 success=False,
-                message=f"Gemini TTS failed: {exc}. Use a key from https://aistudio.google.com/apikey",
+                message=reason,
+                detail=detail,
+                metadata={"provider": "gemini_tts", "model": self.model},
             )
 
         audio = None

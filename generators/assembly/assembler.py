@@ -36,9 +36,9 @@ def run_assembly(
     end_card_img = generate_end_card(config, storyboard["project"]["topic"])
     storyboard.setdefault("final", {})["end_card_path"] = str(end_card_img)
     end_card_clip = config.outputs_dir / "end_card" / "end_card.mp4"
-    from providers.mock_media import make_video_from_image
+    from providers.mock_media import make_static_video_from_image
 
-    make_video_from_image(config, end_card_img, end_card_clip, duration=END_CARD_SECONDS)
+    make_static_video_from_image(config, end_card_img, end_card_clip, duration=END_CARD_SECONDS)
 
     with tempfile.TemporaryDirectory() as tmp:
         tmp_path = Path(tmp)
