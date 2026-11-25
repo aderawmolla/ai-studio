@@ -8,10 +8,14 @@ Python application for **AI-Content Generation: The Heritage Short** (10 Academy
 cd heritage-film
 make install          # once: venv + dependencies
 source .venv/bin/activate
-make film             # runs the entire pipeline
+make film             # runs the entire pipeline (mock or per .env)
 
-# same thing without Make:
-python3 run_film.py
+# Named output + real FLUX + Gemini TTS:
+make film ARGS='--real --fresh "Rock-hewn churches of Lalibela" lalibela.mp4'
+# → outputs/final/lalibela.mp4 and lalibela_16x9.mp4
+
+# same without Make:
+python3 run_film.py --real --fresh "Rock-hewn churches of Lalibela" lalibela.mp4
 ```
 
 Requires **FFmpeg** on PATH. See **`docs/USER_GUIDE.md`** for testing, logs, task checklist, and file map.
@@ -48,7 +52,7 @@ Outputs:
 
 - `storyboard.json` — central contract (see `schemas/storyboard.schema.json`)
 - `config.py` — paths and env vars
-- Copy `env.example` to `.env` for secrets when enabling real providers
+- Copy `.env.example` to `.env` for secrets — see **`docs/ENV_MAP.md`** (which var → which stage)
 
 Set `USE_MOCK_PROVIDERS=false` and provide API keys to wire Gemini, FLUX, Wan, and ACE-Step (stubs raise `NotImplementedError` until you implement them per current vendor docs).
 

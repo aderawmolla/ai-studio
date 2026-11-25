@@ -37,6 +37,7 @@ class VideoProvider(ABC):
         output_path: Path,
         duration: float,
         fps: int,
+        camera_movement: str = "slow push in",
     ) -> ProviderResult:
         ...
 

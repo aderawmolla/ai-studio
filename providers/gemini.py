@@ -23,6 +23,5 @@ class GeminiStoryProvider(StoryProvider):
             raise ValueError("GEMINI_API_KEY required when USE_MOCK_PROVIDERS=false")
 
     def generate_storyboard_draft(self, project: dict[str, Any]) -> dict[str, Any]:
-        raise NotImplementedError(
-            "Gemini integration: implement with google-genai SDK per current docs."
-        )
+        # Story lives in storyboard.json; optional LLM assist can be added later.
+        return {"project": project, "note": "Using storyboard.json as source (Gemini story pass-through)."}

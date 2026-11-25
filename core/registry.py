@@ -15,8 +15,9 @@ from providers.base import (
 )
 from providers.flux import FluxImageProvider, MockFluxProvider
 from providers.gemini import GeminiStoryProvider, MockGeminiProvider
+from providers.gemini_tts import GeminiTTSProvider
 from providers.tts import MockTTSProvider
-from providers.wan import MockWanProvider, WanVideoProvider
+from providers.wan import KenBurnsVideoProvider, MockWanProvider, WanVideoProvider
 
 
 @dataclass
@@ -37,10 +38,23 @@ def build_registry(config: AppConfig) -> ProviderRegistry:
             tts=MockTTSProvider(config),
             music=MockAceStepProvider(config),
         )
+    if config.tts_provider.strip().lower() == "gemini":
+        tts: TextToSpeechProvider = GeminiTTSProvider(config)
+    else:
+        tts = MockTTSProvider(config)
+
+    video: VideoProvider = (
+        WanVideoProvider(config) if config.wan_api_url else KenBurnsVideoProvider(config)
+    )
+
+    music: MusicProvider = (
+        AceStepMusicProvider(config) if config.ace_step_url else MockAceStepProvider(config)
+    )
+
     return ProviderRegistry(
         story=GeminiStoryProvider(config),
         image=FluxImageProvider(config),
-        video=WanVideoProvider(config),
-        tts=MockTTSProvider(config),  # swap when real TTS credentials are configured
-        music=AceStepMusicProvider(config),
+        video=video,
+        tts=tts,
+        music=music,
     )

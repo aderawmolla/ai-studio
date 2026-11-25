@@ -9,6 +9,7 @@ import sys
 from config import load_config
 from core.log_view import count_log_levels, tail_runs_jsonl
 from core.pipeline import Pipeline, PipelineStage, stage_from_cli
+from core.credentials import format_credential_report, verify_kaggle_token
 from core.status import format_status_report
 
 
@@ -20,6 +21,12 @@ def build_parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="command", required=True)
 
     sub.add_parser("status", help="Show which pipeline tasks are done (checklist)")
+    doctor = sub.add_parser("doctor", help="Show which .env credentials are set (no secrets printed)")
+    doctor.add_argument(
+        "--kaggle",
+        action="store_true",
+        help="Test KAGGLE_API_TOKEN against Kaggle API",
+    )
     logs = sub.add_parser("logs", help="View recent run log lines")
     logs.add_argument("-n", type=int, default=30, help="Number of lines to show (default 30)")
     logs.add_argument("--summary", action="store_true", help="Count INFO/WARN/ERROR only")
@@ -42,6 +49,17 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     config = load_config()
+
+    if args.command == "doctor":
+        print(format_credential_report(config))
+        if args.kaggle and config.kaggle_api_token:
+            ok, msg = verify_kaggle_token(config.kaggle_api_token)
+            print(msg)
+            return 0 if ok else 1
+        if args.kaggle and not config.kaggle_api_token:
+            print("Set KAGGLE_API_TOKEN in .env first.")
+            return 1
+        return 0
 
     if args.command == "status":
         print(format_status_report(config.storyboard_path))

@@ -7,6 +7,7 @@ from typing import Any
 from config import AppConfig
 from core.cache import ArtifactCache
 from core.dependency import fingerprint, music_inputs
+from core.duration import film_duration
 from core.logger import RunLogger
 from core.registry import ProviderRegistry
 
@@ -18,7 +19,7 @@ def run_music(
     cache: ArtifactCache,
     log: RunLogger,
 ) -> dict[str, Any]:
-    total = sum(float(s["duration_seconds"]) for s in storyboard.get("shots", []))
+    total = film_duration(storyboard)
     project = storyboard["project"]
     prompt = project.get("music_prompt", "ambient heritage documentary")
     out = config.outputs_dir / "music" / "background.wav"

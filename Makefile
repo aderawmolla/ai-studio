@@ -1,8 +1,10 @@
 .PHONY: film test status logs install
 
-# One command for the assignment README (full pipeline)
+# Default: full pipeline (storyboard as-is)
+# Named film with real AI:
+#   make film ARGS='--real --fresh "Rock-hewn churches of Lalibela" lalibela.mp4'
 film:
-	python3 run_film.py
+	python3 run_film.py $(ARGS)
 
 install:
 	python3 -m venv .venv

@@ -73,8 +73,8 @@
       "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_01.wav",
       "generation_status": {
         "keyframe": "reused",
-        "video": "reused",
-        "narration": "reused"
+        "video": "generated",
+        "narration": "generated"
       }
     },
     {
@@ -99,8 +99,8 @@
       "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_02.wav",
       "generation_status": {
         "keyframe": "reused",
-        "video": "reused",
-        "narration": "reused"
+        "video": "generated",
+        "narration": "generated"
       }
     },
     {
@@ -123,8 +123,8 @@
       "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_03.wav",
       "generation_status": {
         "keyframe": "reused",
-        "video": "reused",
-        "narration": "reused"
+        "video": "generated",
+        "narration": "generated"
       }
     },
     {
@@ -149,8 +149,8 @@
       "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_04.wav",
       "generation_status": {
         "keyframe": "reused",
-        "video": "reused",
-        "narration": "reused"
+        "video": "generated",
+        "narration": "generated"
       }
     },
     {
@@ -173,8 +173,8 @@
       "narration_path": "/home/andrew/My_Folder/AI/10Academy/heritage-film/outputs/narration/sh_05.wav",
       "generation_status": {
         "keyframe": "reused",
-        "video": "reused",
-        "narration": "reused"
+        "video": "generated",
+        "narration": "generated"
       }
     }
   ],

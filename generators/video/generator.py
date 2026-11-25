@@ -39,6 +39,7 @@ def run_videos(
             out,
             float(shot["duration_seconds"]),
             config.fps,
+            shot.get("camera_movement", "slow push in"),
         )
         if not result.success:
             raise RuntimeError(f"Video {sid} failed: {result.message}")
