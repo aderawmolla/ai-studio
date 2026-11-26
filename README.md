@@ -217,7 +217,7 @@ CLI: `.venv/bin/python3 main.py end-card`
 | Voice/picture out of sync | Set `duration_seconds` from measured TTS WAV; `make videos` → `make assemble` |
 | `assemble` / `validate-media`: end card missing | Run `make end-card` first |
 
-More context: `docs/FAILURES.md`.
+**Troubleshooting criterion:** explicit failure log → [`docs/FAILURES.md`](docs/FAILURES.md) (F01–F12) + [`docs/failure_log_excerpts.jsonl`](docs/failure_log_excerpts.jsonl).
 
 ---
 
@@ -239,10 +239,11 @@ These stay in **`docs/`** for grading (design, architecture, experiments, etc.).
 | File | Purpose |
 |------|---------|
 | [`docs/RUBRIC.md`](docs/RUBRIC.md) | Rubric → evidence map (start here for grading) |
+| [`docs/FAILURES.md`](docs/FAILURES.md) | **Failure log (F01–F12)** — troubleshooting & persistence |
+| [`docs/failure_log_excerpts.jsonl`](docs/failure_log_excerpts.jsonl) | Redacted log lines for graders (full log: local `logs/runs.jsonl`) |
 | [`docs/DESIGN.md`](docs/DESIGN.md) | Audience, intent, user tests |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Stages, caching, contracts |
 | [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) | Hypothesis → change → result |
-| [`docs/FAILURES.md`](docs/FAILURES.md) | Blockers and fixes |
 | [`docs/COSTS.md`](docs/COSTS.md) | Latency and API usage |
 | [`docs/ETHICS.md`](docs/ETHICS.md) | Consent, licences, labelling |
 

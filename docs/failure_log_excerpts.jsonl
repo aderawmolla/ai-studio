@@ -1,0 +1,6 @@
+{"note":"Redacted excerpts from logs/runs.jsonl for grading (no secrets). Full log is local/gitignored."}
+{"timestamp":"2026-11-25T12:31:20Z","level":"ERROR","stage":"narration","message":"400 INVALID_ARGUMENT speechConfig","extra":{"type":"model_call","model":"gemini-2.5-flash-preview-tts","success":false}}
+{"timestamp":"2026-11-26T15:03:59Z","level":"ERROR","stage":"audio","message":"Narration sh_05 failed","extra":{"reason":"API rate limit HTTP 429","shot_id":"sh_05"}}
+{"timestamp":"2026-11-26T15:13:52Z","level":"ERROR","stage":"image","message":"429 Too Many Requests","extra":{"type":"model_call","model":"@cf/black-forest-labs/flux-1-schnell","success":false}}
+{"timestamp":"2026-11-26T15:56:47Z","level":"WARN","stage":"end-card","message":"FLUX end card failed — using fallback art","extra":{"reason":"429 Client Error"}}
+{"timestamp":"2026-11-26T15:57:07Z","level":"INFO","stage":"assemble","message":"Reused final outputs","extra":null}

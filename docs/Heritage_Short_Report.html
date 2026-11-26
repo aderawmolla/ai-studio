@@ -37,7 +37,12 @@
 <h2>3. Hardest problem and how I solved it</h2>
 <p>The hardest integration problem was <strong>Gemini text-to-speech</strong>. My first API payload used an invalid field (<code>speechConfig</code>), which returned <code>400 INVALID_ARGUMENT</code> (logged in <code>logs/runs.jsonl</code> with model <code>gemini-2.5-flash-preview-tts</code>). I switched to the Interactions API with <code>response_format</code> audio and <code>speech_config</code> in <code>providers/gemini_tts.py</code>. After that, 45+ successful calls on <code>gemini-3.8-flash-tts</code> produced Amharic lines for all nine shots.</p>
 <p>The hardest <strong>creative/technical</strong> problem was <strong>sync</strong>: picture length came from storyboard durations while voice length came from TTS. I added pad/trim in <code>generators/audio/narration.py</code>, but the durable fix is measuring each <code>outputs/narration/sh_*.wav</code> and updating <code>duration_seconds</code>, then re-running <code>make videos</code> and <code>make assemble</code> (documented in <code>docs/FAILURES.md</code>).</p>
-<p>A close third was <strong>video without Wan GPU time</strong>: <code>WanVideoProvider</code> is not wired in code, so real-mode video uses Ken Burns on FLUX stills (<code>KenBurnsVideoProvider</code>). That met the deadline but some clips feel zoom-heavy; see <code>docs/FAILURES.md</code>.</p>
+<p>A close third was <strong>video without Wan GPU time</strong>: <code>WanVideoProvider</code> is not wired in code, so real-mode video uses Ken Burns on FLUX stills (<code>KenBurnsVideoProvider</code>). That met the deadline but some clips feel zoom-heavy; see <code>docs/FAILURES.md</code> (F07).</p>
+
+<h2>3b. Failure log (troubleshooting &amp; persistence)</h2>
+<p>I kept an explicit <strong>failure log</strong> for every major blocker: symptom, what I tried, the fix or workaround, and where to verify it. The canonical document is <code>docs/FAILURES.md</code> (entries <strong>F01–F12</strong>), including Gemini TTS schema errors (F01), TTS rate limits (F02), narration sync/overlap (F03), assembly cache after end-card updates (F04), Cloudflare FLUX 429 on the end card (F05), Wan/ACE stubs, reference-image limits, and cache/venv issues.</p>
+<p>Redacted log lines shipped in the repo for graders: <code>docs/failure_log_excerpts.jsonl</code>. The full append-only log is <code>logs/runs.jsonl</code> on my machine after pipeline runs (<code>make logs</code>). Each failure entry in <code>FAILURES.md</code> points to timestamps or grep patterns in that file.</p>
+<p>Rubric map: <code>docs/RUBRIC.md</code> (troubleshooting row → <code>FAILURES.md</code>).</p>
 
 <h2>4. Suggested practices: one that helped, one that did not</h2>
 <p><strong>Helped — storyboard as contract + caching:</strong> Keeping prompts, seeds, durations, and paths in <code>storyboard.json</code>, validated by JSON Schema before each run, made partial regeneration work. Fingerprints in <code>core/cache.py</code> mean changing one shot’s <code>image_prompt</code> can regenerate only that keyframe and downstream clip (see <code>docs/EXPERIMENTS.md</code> E08). This matched the assignment’s intent better than hard-coding prompts in Python.</p>
@@ -60,7 +65,7 @@
 <h2>7. How to verify the repository and outputs</h2>
 <p><strong>Code:</strong> clone <a href="https://github.com/aderawmolla/ai-studio">github.com/aderawmolla/ai-studio</a>, then <code>make install</code>, copy <code>.env.example</code> to <code>.env</code>, run <code>make film</code> (mock) or <code>make film ARGS='--real'</code> with Gemini and Cloudflare keys. Regenerated artifacts go under <code>outputs/final/</code>; model calls append to <code>logs/runs.jsonl</code>.</p>
 <p><strong>Submitted media:</strong> watch the finished film and exports in the Google Drive outputs folder (link above). Reference PNGs and supporting files are in the reference Drive folder.</p>
-<p><strong>Process evidence in the repo:</strong> <code>docs/RUBRIC.md</code> (criterion → evidence map), <code>docs/ARCHITECTURE.md</code>, <code>DESIGN.md</code>, <code>EXPERIMENTS.md</code>, <code>FAILURES.md</code>, <code>COSTS.md</code>, <code>ETHICS.md</code>.</p>
+<p><strong>Process evidence in the repo:</strong> <code>docs/RUBRIC.md</code>, <code>docs/FAILURES.md</code> + <code>docs/failure_log_excerpts.jsonl</code> (troubleshooting), <code>docs/ARCHITECTURE.md</code>, <code>DESIGN.md</code>, <code>EXPERIMENTS.md</code>, <code>COSTS.md</code>, <code>ETHICS.md</code>.</p>
 
 </body>
 </html>
