@@ -56,7 +56,7 @@ After **git clone**, `outputs/` is usually empty (gitignored). Run the pipeline 
 ## Install (once)
 
 ```bash
-cd heritage-film
+cd ai-studio
 make install
 ```
 
