@@ -18,7 +18,7 @@ Model calls append to **`logs/runs.jsonl`** (one JSON object per line; `extra.ty
 | Moving shots | `videos` | `generators/video/`, `providers/wan.py` (Ken Burns if no Wan URL) |
 | Music | `music` | `generators/audio/music.py`, `providers/ace_step.py` |
 | Narration | `narration` | `generators/audio/narration.py`, `providers/gemini_tts.py` |
-| Assembly | `subtitles`, `assemble`, `final-check` | `generators/assembly/`, `validation/final_output.py` |
+| Assembly | `subtitles`, `end-card`, `validate-media`, `assemble`, `final-check` | `generators/assembly/`, `validation/final_output.py` |
 
 ```mermaid
 flowchart LR
@@ -29,9 +29,10 @@ flowchart LR
   sb --> nar[narration]
   sb --> mus[music]
   nar --> sub[subtitles]
+  sub --> ec[end-card]
   vid --> asm[assemble]
   mus --> asm
-  sub --> asm
+  ec --> asm
   asm --> out[9:16 and 16:9 MP4]
 ```
 

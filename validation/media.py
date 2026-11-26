@@ -67,4 +67,12 @@ def validate_media(storyboard: dict[str, Any], config: AppConfig) -> MediaValida
         elif not Path(p).is_file():
             errors.append(f"audio.{key} not found: {p}")
 
+    final = storyboard.get("final", {})
+    end_png = final.get("end_card_path") or str(config.outputs_dir / "end_card" / "end_card.png")
+    end_clip = final.get("end_card_clip_path") or str(config.outputs_dir / "end_card" / "end_card.mp4")
+    if not Path(end_png).is_file():
+        errors.append(f"end card PNG missing (run: make end-card): {end_png}")
+    if not Path(end_clip).is_file():
+        errors.append(f"end card clip missing (run: make end-card): {end_clip}")
+
     return MediaValidationReport(ok=not errors, errors=errors, warnings=warnings)

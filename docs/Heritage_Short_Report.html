@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Heritage Short — Assignment 1 Report</title>
+  <style>
+    body { font-family: Georgia, "Times New Roman", serif; font-size: 11pt; line-height: 1.45; max-width: 720px; margin: 2cm auto; color: #111; }
+    h1 { font-size: 18pt; margin-bottom: 0.2em; }
+    h2 { font-size: 13pt; margin-top: 1.4em; border-bottom: 1px solid #ccc; padding-bottom: 0.2em; }
+  </style>
+</head>
+<body>
+
+<h1>AI-Content Generation: The Heritage Short</h1>
+<p><strong>Assignment 1 report</strong> — codebase and reflection<br/>
+<strong>Film:</strong> <em>The Smile That Carried Him</em><br/>
+<strong>Author:</strong> Adera Molla<br/>
+<strong>Date:</strong> November 2025</p>
+<p><strong>Public repository:</strong> <a href="https://github.com/aderawmolla/ai-studio">https://github.com/aderawmolla/ai-studio</a></p>
+<p><strong>Film outputs</strong> (vertical/horizontal MP4 and related deliverables — repo media is gitignored):<br/>
+<a href="https://drive.google.com/drive/folders/1zNn3uPE1vxjfZ0OEcweoLQNpNSQAuHFM?usp=sharing">https://drive.google.com/drive/folders/1zNn3uPE1vxjfZ0OEcweoLQNpNSQAuHFM</a></p>
+<p><strong>Reference assets</strong> (character/location reference images and project reference files):<br/>
+<a href="https://drive.google.com/drive/folders/1Wpax7LP4raYGJRYSEU_mTOIBMME1bt5p?usp=drive_link">https://drive.google.com/drive/folders/1Wpax7LP4raYGJRYSEU_mTOIBMME1bt5p</a></p>
+
+<h2>1. What I set out to make and for whom</h2>
+<p>I built a reproducible Python pipeline that turns a single contract file, <code>storyboard.json</code>, into a 60–90 second heritage short with Amharic narration, English subtitles, an instrumental score ducked under the voice, and dual exports (9:16 vertical and 16:9 horizontal reframe). The story is fictional: a young Ethiopian man tries many paths in the city, feels invisible and exhausted, and keeps moving when he remembers his promise to his mother.</p>
+<p><strong>Audience:</strong> young Ethiopians and diaspora viewers watching on phones—people in uncertain early careers, setbacks, and distance from family.</p>
+<p><strong>Intent:</strong> viewers should feel encouraged when progress feels slow or unseen, and moved by the quiet joy of keeping faith with family.</p>
+<p><strong>Look and sound:</strong> hand-painted gouache style (warm palette, stylized faces—not real likenesses); Gemini TTS in Amharic; Cloudflare FLUX for stills; FFmpeg for Ken Burns motion, assembly, ducking, and subtitles. Evidence: <code>storyboard.json</code>, <code>docs/DESIGN.md</code>, <code>outputs/final/heritage_vertical.mp4</code>.</p>
+
+<h2>2. What I learned from audience feedback</h2>
+<p>The brief asks for two rounds of testing (radio cut and near-final cut), each with at least three people from the intended audience, recorded in <code>docs/DESIGN.md</code>.</p>
+<p><strong>Radio cut (audio animatic):</strong> I produced per-shot Gemini TTS, combined narration with placeholder music, and listened for pacing before relying on expensive image generation. This confirmed that nine shots at roughly 6–8 seconds each fit the ~78 s runtime (nine shots plus a 4 s end card).</p>
+<p><strong>Near-final cut:</strong> Watching the vertical export on a phone and with headphones, I found that narration length did not always match estimated <code>duration_seconds</code> in the storyboard—Amharic TTS runs at a different pace than a words-per-second guess. Reviewers wanted the mother/smile beat to land clearly at the end; I kept shot <code>reason</code> fields explicit in the storyboard so each beat has a stated purpose.</p>
+<p><em>Before you submit:</em> replace this subsection with real quotes and storyboard changes from your three+ testers per round in <code>docs/DESIGN.md</code> (Slack cohort, family, peers). Do not submit fabricated names or quotes.</p>
+
+<h2>3. Hardest problem and how I solved it</h2>
+<p>The hardest integration problem was <strong>Gemini text-to-speech</strong>. My first API payload used an invalid field (<code>speechConfig</code>), which returned <code>400 INVALID_ARGUMENT</code> (logged in <code>logs/runs.jsonl</code> with model <code>gemini-2.5-flash-preview-tts</code>). I switched to the Interactions API with <code>response_format</code> audio and <code>speech_config</code> in <code>providers/gemini_tts.py</code>. After that, 45+ successful calls on <code>gemini-3.8-flash-tts</code> produced Amharic lines for all nine shots.</p>
+<p>The hardest <strong>creative/technical</strong> problem was <strong>sync</strong>: picture length came from storyboard durations while voice length came from TTS. I added pad/trim in <code>generators/audio/narration.py</code>, but the durable fix is measuring each <code>outputs/narration/sh_*.wav</code> and updating <code>duration_seconds</code>, then re-running <code>make videos</code> and <code>make assemble</code> (documented in <code>docs/FAILURES.md</code>).</p>
+<p>A close third was <strong>video without Wan GPU time</strong>: <code>WanVideoProvider</code> is not wired in code, so real-mode video uses Ken Burns on FLUX stills (<code>KenBurnsVideoProvider</code>). That met the deadline but some clips feel zoom-heavy; see <code>docs/FAILURES.md</code>.</p>
+
+<h2>4. Suggested practices: one that helped, one that did not</h2>
+<p><strong>Helped — storyboard as contract + caching:</strong> Keeping prompts, seeds, durations, and paths in <code>storyboard.json</code>, validated by JSON Schema before each run, made partial regeneration work. Fingerprints in <code>core/cache.py</code> mean changing one shot’s <code>image_prompt</code> can regenerate only that keyframe and downstream clip (see <code>docs/EXPERIMENTS.md</code> E08). This matched the assignment’s intent better than hard-coding prompts in Python.</p>
+<p><strong>Did not help as expected — reference sheet without image conditioning:</strong> I generated character/location references first (E05), but the Cloudflare FLUX wrapper is text-only: reference PNGs are not sent to the API. Continuity improved only through repeating <code>style_block</code> and character text, not through pixels. Next time I would use an img2img/edit endpoint or accept fewer characters (see E04, E05, <code>docs/FAILURES.md</code>).</p>
+<p><strong>Logging every model call</strong> to <code>logs/runs.jsonl</code> helped debugging and <code>docs/COSTS.md</code> (~88 calls, ~483 s API wall time, $0 on free tiers).</p>
+
+<h2>5. Ceiling work and insight</h2>
+<p>I stayed on the free stack: Cloudflare FLUX schnell, Gemini TTS, local FFmpeg. I did not wire HTTP clients for Wan 2.2 or ACE-Step in Python; instead I documented Ken Burns fallback and <code>MUSIC_FILE</code> override for an imported score. I ran more than ten logged experiments (<code>docs/EXPERIMENTS.md</code>), including Amharic TTS, FLUX look, ducking, cache selective regen, and end-card generation.</p>
+<p>Insight: orchestration and measurement matter more than any single model—when TTS API shape changed, the pipeline survived because stages and logs were separate from providers.</p>
+
+<h2>6. What I would build next</h2>
+<ul>
+  <li>Implement Wan TI2V (Kaggle notebook or <code>WAN_API_URL</code>) for hero shots only; keep Ken Burns for B-roll.</li>
+  <li>Wire ACE-Step or always document three music candidates with rationale in EXPERIMENTS.</li>
+  <li>Pass reference images into FLUX edit/img2img for character continuity.</li>
+  <li>Log seeds from <code>storyboard.json</code> into every <code>model_call</code> line.</li>
+  <li>Package the pipeline as a small CLI documented in README (<code>make install</code>, <code>make film</code>, per-stage <code>make assemble</code>, etc.) for graders cloning the repo.</li>
+</ul>
+
+<h2>7. How to verify the repository and outputs</h2>
+<p><strong>Code:</strong> clone <a href="https://github.com/aderawmolla/ai-studio">github.com/aderawmolla/ai-studio</a>, then <code>make install</code>, copy <code>.env.example</code> to <code>.env</code>, run <code>make film</code> (mock) or <code>make film ARGS='--real'</code> with Gemini and Cloudflare keys. Regenerated artifacts go under <code>outputs/final/</code>; model calls append to <code>logs/runs.jsonl</code>.</p>
+<p><strong>Submitted media:</strong> watch the finished film and exports in the Google Drive outputs folder (link above). Reference PNGs and supporting files are in the reference Drive folder.</p>
+<p><strong>Process evidence in the repo:</strong> <code>docs/RUBRIC.md</code> (criterion → evidence map), <code>docs/ARCHITECTURE.md</code>, <code>DESIGN.md</code>, <code>EXPERIMENTS.md</code>, <code>FAILURES.md</code>, <code>COSTS.md</code>, <code>ETHICS.md</code>.</p>
+
+</body>
+</html>

@@ -24,8 +24,9 @@ STAGE_TASKS: list[tuple[str, str, str]] = [
     ("images", "Keyframes", "One still per shot"),
     ("videos", "Moving shots", "One clip per shot"),
     ("audio", "Narration, music, subtitles", "WAV + SRT"),
+    ("end-card", "End card", "PNG + 4s clip (Made with AI)"),
     ("validate-media", "Media checks", "All files exist before edit"),
-    ("assemble", "Final edit", "9:16 + 16:9 MP4, ducking, end card"),
+    ("assemble", "Final edit", "9:16 + 16:9 MP4, ducking"),
     ("final-check", "Deliverable validation", "validation_report.json"),
 ]
 
@@ -52,6 +53,14 @@ def build_task_statuses(storyboard_path: Path) -> list[TaskStatus]:
     report_path = Path(final.get("vertical_path") or ".").parent / "validation_report.json"
     report_ok = report_path.is_file()
 
+    end_png_p = Path(final["end_card_path"]) if final.get("end_card_path") else Path("outputs/end_card/end_card.png")
+    end_clip_p = (
+        Path(final["end_card_clip_path"])
+        if final.get("end_card_clip_path")
+        else Path("outputs/end_card/end_card.mp4")
+    )
+    end_ok = end_png_p.is_file() and end_clip_p.is_file()
+
     flags = {
         "validate": True,  # assumed if storyboard loads; run validate for certainty
         "story": bool(shots and all(s.get("narration_text") for s in shots)),
@@ -60,6 +69,7 @@ def build_task_statuses(storyboard_path: Path) -> list[TaskStatus]:
         "videos": vid_done,
         "audio": nar_done and music_ok and subs_ok,
         "validate-media": nar_done and vid_done and music_ok and subs_ok,
+        "end-card": end_ok,
         "assemble": vert_ok and horiz_ok,
         "final-check": report_ok and vert_ok and horiz_ok,
     }
@@ -71,6 +81,7 @@ def build_task_statuses(storyboard_path: Path) -> list[TaskStatus]:
         "videos": f"{sum(1 for s in shots if s.get('clip_path'))}/{len(shots)} clips",
         "audio": "narration + music + subtitles",
         "validate-media": "pre-assembly",
+        "end-card": "PNG + clip" if end_ok else "run make end-card",
         "assemble": "vertical + horizontal" if vert_ok and horiz_ok else "not exported",
         "final-check": "report OK" if report_ok else "run final-check",
     }

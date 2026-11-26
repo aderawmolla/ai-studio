@@ -97,7 +97,7 @@ Keys: [Google AI Studio](https://aistudio.google.com) (Gemini TTS), Cloudflare �
 | Variable | Use |
 |----------|-----|
 | `MUSIC_FILE=/path/to.wav` | Your music (e.g. ACE-Step from Kaggle) instead of mock score |
-| `END_CARD_IMAGE=/path/to.png` | Custom end card |
+| `END_CARD_IMAGE=/path/to.png` | Custom end card art (`Made with AI` bar added in code) |
 | `FFMPEG_PATH` / `FFPROBE_PATH` | Non-standard FFmpeg location |
 
 `make film ARGS='--real'` turns off mocks and sets `TTS_PROVIDER=gemini` for that run (keys still required in `.env`).
@@ -137,15 +137,16 @@ Run after `make install`:
 | `make videos` | Clips |
 | `make narration` / `make music` / `make subtitles` | Audio parts |
 | **`make audio`** | narration + music + subtitles |
-| `make validate-media` | Files exist before edit |
-| **`make assemble`** | Final MP4s |
+| **`make end-card`** | End card PNG + `end_card.mp4` (`outputs/end_card/`) |
+| `make validate-media` | Files exist before edit (includes end card) |
+| **`make assemble`** | Final MP4s (requires `make end-card` first) |
 | `make final-check` | Deliverable report |
 
 **Examples**
 
 ```bash
-make audio && make assemble          # redo sound + export
-make validate-media && make assemble # re-export only
+make audio && make end-card && make assemble   # redo sound + card + export
+make end-card && make assemble                 # new card only, then export
 ```
 
 Keep existing music: `source .venv/bin/activate && python3 main.py music --reuse`
@@ -165,6 +166,42 @@ make logs
 
 Without Make: `.venv/bin/python3 main.py generate --from-stage videos`
 
+### End card (`Made with AI`)
+
+End card assets are **only** created by **`make end-card`** (not during `make assemble`).
+
+| Output | Path |
+|--------|------|
+| Still + disclosure bar | `outputs/end_card/end_card.png` |
+| 4s clip appended in edit | `outputs/end_card/end_card.mp4` |
+
+```bash
+make end-card      # FLUX/placeholder + “Made with AI” + clip
+make assemble      # concat shots + end_card.mp4 → finals (re-runs when end card files change)
+
+If `assemble` still says **Reused final outputs**, delete finals and cache for assembly:
+
+```bash
+rm -f outputs/final/heritage_vertical.mp4 outputs/final/heritage_horizontal.mp4
+python3 -c "import json; p='cache/index.json'; i=json.load(open(p)); i.pop('assembly:final',None); json.dump(i,open(p,'w'),indent=2)"
+make assemble
+```
+```
+
+Full pipeline order includes `end-card` after subtitles and before `validate-media`.
+
+**Storyboard:** `project.end_card_prompt` (FLUX art, no text), `final.end_card_text` (default `Made with AI`).
+
+**Reuse your own hills art (no FLUX call):**
+
+```bash
+cp /path/to/hills.png outputs/end_card/end_card_art.png
+make end-card
+make assemble
+```
+
+CLI: `.venv/bin/python3 main.py end-card`
+
 ---
 
 ## Troubleshooting
@@ -176,7 +213,9 @@ Without Make: `.venv/bin/python3 main.py generate --from-stage videos`
 | `validate-media` fails | Run earlier stages (`make film` or `make audio` + `images` + `videos`) |
 | Deleted files but stage says **Reused** | `rm -f cache/index.json` or `make film ARGS='--fresh'` |
 | No real images/voice | `make doctor`; set Cloudflare + Gemini; use `make film ARGS='--real'` |
+| End card is black/brown placeholder, not hills | Cloudflare **429** — wait and `make end-card` again, or `END_CARD_IMAGE` / `end_card_art.png` |
 | Voice/picture out of sync | Set `duration_seconds` from measured TTS WAV; `make videos` → `make assemble` |
+| `assemble` / `validate-media`: end card missing | Run `make end-card` first |
 
 More context: `docs/FAILURES.md`.
 
@@ -195,8 +234,11 @@ More context: `docs/FAILURES.md`.
 
 These stay in **`docs/`** for grading (design, architecture, experiments, etc.). Running the pipeline needs **only this README** + `.env.example`.
 
+**Grading criteria (100 pts):** software engineering & reproducibility (28), documentation (14), design & audience (14), experimentation (14), troubleshooting (14), measurement (8), consent & labelling (8). See **[`docs/RUBRIC.md`](docs/RUBRIC.md)** for a checklist and where each piece of evidence lives in the repo.
+
 | File | Purpose |
 |------|---------|
+| [`docs/RUBRIC.md`](docs/RUBRIC.md) | Rubric → evidence map (start here for grading) |
 | [`docs/DESIGN.md`](docs/DESIGN.md) | Audience, intent, user tests |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Stages, caching, contracts |
 | [`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) | Hypothesis → change → result |

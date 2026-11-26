@@ -1,11 +1,12 @@
 # Heritage Short — use .venv Python for every target (run `make install` first).
+# Stage targets follow core/pipeline.py STAGE_ORDER (make film runs all of them).
 
 PYTHON := .venv/bin/python3
 PIP    := .venv/bin/pip
 
-.PHONY: install help film test status logs doctor
+.PHONY: install help film test status logs doctor generate
 .PHONY: validate story references images videos
-.PHONY: narration music subtitles audio validate-media assemble final-check generate
+.PHONY: narration music subtitles end-card validate-media assemble final-check audio
 
 install:
 	python3 -m venv .venv
@@ -17,10 +18,19 @@ install:
 
 help:
 	@echo "Setup (once):     make install"
-	@echo "Full film:        make film"
+	@echo "Full pipeline:    make film"
 	@echo "                  make film ARGS='--real'"
-	@echo "Single stages:    make assemble | make audio | make music | make narration | ..."
-	@echo "                  make images | make videos | make validate | make final-check"
+	@echo ""
+	@echo "Stages (same order as make film):"
+	@echo "  make validate"
+	@echo "  make references  make images  make videos"
+	@echo "  make narration   make music    make subtitles"
+	@echo "  make end-card"
+	@echo "  make validate-media"
+	@echo "  make assemble"
+	@echo "  make final-check"
+	@echo ""
+	@echo "Bundles:          make audio  (narration + music + subtitles)"
 	@echo "Inspect:          make status | make logs | make doctor | make test"
 
 film:
@@ -37,6 +47,9 @@ logs:
 
 doctor:
 	$(PYTHON) main.py doctor
+
+generate:
+	$(PYTHON) main.py generate $(if $(FROM),--from-stage $(FROM),)
 
 validate:
 	$(PYTHON) main.py validate
@@ -62,8 +75,8 @@ music:
 subtitles:
 	$(PYTHON) main.py subtitles
 
-audio:
-	$(PYTHON) main.py audio
+end-card:
+	$(PYTHON) main.py end-card
 
 validate-media:
 	$(PYTHON) main.py validate-media
@@ -74,5 +87,5 @@ assemble:
 final-check:
 	$(PYTHON) main.py final-check
 
-generate:
-	$(PYTHON) main.py generate $(if $(FROM),--from-stage $(FROM),)
+audio:
+	$(PYTHON) main.py audio

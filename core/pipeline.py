@@ -13,6 +13,7 @@ from core.cache import ArtifactCache
 from core.logger import RunLogger
 from core.registry import ProviderRegistry, build_registry
 from generators.assembly.assembler import run_assembly
+from generators.assembly.end_card import run_end_card
 from generators.audio.music import run_music
 from generators.audio.narration import run_narration
 from generators.audio.subtitles import run_subtitles
@@ -35,6 +36,7 @@ class PipelineStage(str, Enum):
     SUBTITLES = "subtitles"
     AUDIO = "audio"  # legacy: runs narration + music + subtitles
     VALIDATE_MEDIA = "validate-media"
+    END_CARD = "end-card"
     ASSEMBLE = "assemble"
     FINAL_CHECK = "final-check"
 
@@ -48,6 +50,7 @@ STAGE_ORDER: list[PipelineStage] = [
     PipelineStage.NARRATION,
     PipelineStage.MUSIC,
     PipelineStage.SUBTITLES,
+    PipelineStage.END_CARD,
     PipelineStage.VALIDATE_MEDIA,
     PipelineStage.ASSEMBLE,
     PipelineStage.FINAL_CHECK,
@@ -147,8 +150,10 @@ class Pipeline:
                 self.log.info("validate-media", "Media OK")
                 self._save(data)
                 return True
+            elif stage == PipelineStage.END_CARD:
+                data = run_end_card(data, self.config, self.registry, self.log)
             elif stage == PipelineStage.ASSEMBLE:
-                data = run_assembly(data, self.config, self.cache, self.log, self.registry)
+                data = run_assembly(data, self.config, self.cache, self.log)
             elif stage == PipelineStage.FINAL_CHECK:
                 report = validate_final_outputs(data, self.config)
                 out_path = self.config.outputs_dir / "final" / "validation_report.json"

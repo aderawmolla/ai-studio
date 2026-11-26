@@ -9,9 +9,13 @@ from typing import Any
 from config import AppConfig
 from core.cache import ArtifactCache
 from core.dependency import fingerprint, shot_narration_inputs
+from core.duration import film_duration
 from core.logger import RunLogger
 from core.errors import StageAbort
 from core.registry import ProviderRegistry
+
+# Brief pause after each line so the next shot does not feel stacked on the previous one.
+NARRATION_TAIL_MARGIN_S = 0.25
 
 
 def _probe_audio_duration(config: AppConfig, path: Path) -> float:
@@ -29,42 +33,47 @@ def _probe_audio_duration(config: AppConfig, path: Path) -> float:
     return float(out.stdout.strip())
 
 
-def _fit_narration_to_shot(
-    config: AppConfig, path: Path, target_seconds: float
-) -> None:
-    """Pad or trim WAV so each shot's audio matches storyboard clip length."""
+def _pad_wav_to_duration(config: AppConfig, path: Path, target_seconds: float) -> None:
     actual = _probe_audio_duration(config, path)
     target = max(target_seconds, 0.1)
-    if abs(actual - target) < 0.05:
+    if actual >= target - 0.03:
         return
+    pad = target - actual
     tmp = path.with_suffix(".fit.wav")
-    if actual < target:
-        pad = target - actual
-        cmd = [
-            config.ffmpeg_path,
-            "-y",
-            "-i",
-            str(path),
-            "-af",
-            f"apad=pad_dur={pad:.3f}",
-            "-t",
-            f"{target:.3f}",
-            str(tmp),
-        ]
-    else:
-        cmd = [
-            config.ffmpeg_path,
-            "-y",
-            "-i",
-            str(path),
-            "-t",
-            f"{target:.3f}",
-            "-c:a",
-            "pcm_s16le",
-            str(tmp),
-        ]
+    cmd = [
+        config.ffmpeg_path,
+        "-y",
+        "-i",
+        str(path),
+        "-af",
+        f"apad=pad_dur={pad:.3f}",
+        "-t",
+        f"{target:.3f}",
+        str(tmp),
+    ]
     subprocess.run(cmd, check=True, capture_output=True)
     tmp.replace(path)
+
+
+def _align_narration_to_shot(config: AppConfig, path: Path, shot: dict[str, Any]) -> bool:
+    """Match storyboard slot to TTS length: extend duration when needed; never trim speech."""
+    actual = _probe_audio_duration(config, path)
+    target = float(shot["duration_seconds"])
+    extended = False
+    if actual + 0.05 > target:
+        shot["duration_seconds"] = round(actual + NARRATION_TAIL_MARGIN_S, 1)
+        target = float(shot["duration_seconds"])
+        extended = True
+    _pad_wav_to_duration(config, path, target)
+    return extended
+
+
+def _sync_film_duration_metadata(storyboard: dict[str, Any]) -> None:
+    total = int(round(film_duration(storyboard)))
+    storyboard["project"]["target_duration_seconds"] = total
+    meta = storyboard["project"].get("music_metadata")
+    if isinstance(meta, dict):
+        meta["duration_seconds"] = total
 
 
 def run_narration(
@@ -76,7 +85,9 @@ def run_narration(
 ) -> dict[str, Any]:
     lang = storyboard["project"]["narration_language"]
     narration_paths: list[Path] = []
-    for shot in storyboard.get("shots", []):
+    extended_any = False
+    shots = sorted(storyboard.get("shots", []), key=lambda s: s["shot_order"])
+    for shot in shots:
         sid = shot["shot_id"]
         out = config.outputs_dir / "narration" / f"{sid}.wav"
         fp = fingerprint(shot_narration_inputs(shot, lang))
@@ -87,7 +98,8 @@ def run_narration(
             shot["narration_path"] = cached["path"]
             status["narration"] = "reused"
             wav = Path(cached["path"])
-            _fit_narration_to_shot(config, wav, float(shot["duration_seconds"]))
+            if _align_narration_to_shot(config, wav, shot):
+                extended_any = True
             narration_paths.append(wav)
             continue
         log.info("audio", f"Generating narration {sid} (calling TTS API; please wait)")
@@ -103,7 +115,8 @@ def run_narration(
                 shot_id=sid,
             )
             raise StageAbort(result.message, result.detail or result.message)
-        _fit_narration_to_shot(config, out, float(shot["duration_seconds"]))
+        if _align_narration_to_shot(config, out, shot):
+            extended_any = True
         shot["narration_path"] = str(out)
         status["narration"] = "generated"
         cache.store(key, fp, out, reason="new narration", stage="audio")
@@ -113,6 +126,13 @@ def run_narration(
     full_out = config.outputs_dir / "narration" / "full.wav"
     _concat_wavs(config, narration_paths, full_out)
     storyboard.setdefault("audio", {})["full_narration_path"] = str(full_out)
+    if extended_any:
+        _sync_film_duration_metadata(storyboard)
+        log.info(
+            "audio",
+            "Shot durations extended to fit narration (no trim). Run: make videos && make subtitles && make assemble",
+            target_seconds=storyboard["project"]["target_duration_seconds"],
+        )
     return storyboard
 
 

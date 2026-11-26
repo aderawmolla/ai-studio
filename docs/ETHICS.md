@@ -8,7 +8,7 @@ Film uses **fictional stylized characters** (young man “Biruk”, mother, illu
 
 ## AI disclosure
 
-- On-screen: end card includes **“Made with AI”** (`final.end_card_text` in storyboard).
+- On-screen: end card includes **“Made with AI”** (`final.end_card_text` in storyboard). Regenerate PNG: `make end-card`, then `make assemble`.
 - Distribution: enable the platform **AI / synthetic media** label when posting (YouTube, TikTok, Meta).
 - Walkthrough and README state that visuals, voice, music, and end card are AI-assisted.
 

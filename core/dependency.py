@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 from core.cache import fingerprint_payload
@@ -52,7 +53,19 @@ def subtitles_inputs(shots: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _file_content_sig(path: str | None) -> str | None:
+    """So assemble re-runs when end card (or other asset) is replaced on disk."""
+    if not path:
+        return None
+    p = Path(path)
+    if not p.is_file():
+        return f"missing:{path}"
+    st = p.stat()
+    return f"{p.resolve()}:{st.st_mtime_ns}:{st.st_size}"
+
+
 def assembly_inputs(storyboard: dict[str, Any], export_vertical: bool, export_horizontal: bool) -> dict[str, Any]:
+    final = storyboard.get("final", {})
     return {
         "shots": [
             (s["shot_id"], s.get("clip_path"), s.get("narration_path"), s["duration_seconds"])
@@ -60,6 +73,8 @@ def assembly_inputs(storyboard: dict[str, Any], export_vertical: bool, export_ho
         ],
         "music": storyboard.get("audio", {}).get("music_path"),
         "subs": storyboard.get("audio", {}).get("subtitles_path"),
+        "end_card_png": _file_content_sig(final.get("end_card_path")),
+        "end_card_clip": _file_content_sig(final.get("end_card_clip_path")),
         "vertical": export_vertical,
         "horizontal": export_horizontal,
     }

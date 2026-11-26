@@ -59,5 +59,5 @@ Format: **hypothesis → change → result** (evidence in code, `logs/runs.jsonl
 ## E10 — End card
 
 - **Hypothesis:** FLUX `end_card_prompt` gives on-brand “Made with AI” card.
-- **Change:** `generators/assembly/end_card.py` calls image provider when `USE_MOCK_PROVIDERS=false`.
+- **Change:** `make end-card` / `generators/assembly/end_card.py` calls image provider when `USE_MOCK_PROVIDERS=false` (assemble only appends the clip).
 - **Result:** `outputs/end_card/end_card.png` generated or placeholder with title + “Made with AI” text.
